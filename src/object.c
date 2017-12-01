@@ -2,11 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "msdl.h"
 #include "map.h"
 #include "object.h"
 #include "vector2.h"
-
-#define RATIO_LOCK_PC 4
 
 struct object *object_create(enum tile_type type, int state, int x, int y)
 {

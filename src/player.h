@@ -3,6 +3,7 @@
 
 #include "vector2.h"
 
+
 struct player
 {
   struct vect2 *pos;

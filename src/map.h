@@ -5,7 +5,8 @@
 
 #include "object.h"
 
-
+#define MAP_HEIGHT 30
+#define MAP_WIDTH 40
 
 struct map
 {

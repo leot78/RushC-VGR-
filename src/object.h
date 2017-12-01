@@ -6,6 +6,8 @@
 #include "map.h"
 #include "vector2.h"
 
+#define RATIO_LOCK_PC 4
+
 enum tile_type
 {
   NONE = ' ',

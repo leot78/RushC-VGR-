@@ -13,6 +13,7 @@ enum colors
   GREY
 };
 
-
+SDL_Color pick_color(enum colors c);
+SDL_Rect init_rect(int x, int y, int w, int h);
 
 #endif /* !MSDL_H */

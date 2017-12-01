@@ -12,4 +12,5 @@ struct player
 struct player *player_create(int x, int y, int life);
 void player_delete(struct player *p);
 
+int check_vector(struct map *map, struct vect2 *v);
 #endif /* !PLAYER_H */

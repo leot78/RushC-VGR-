@@ -8,7 +8,7 @@
 
 #define RATIO_LOCK_PC 4
 
-struct object *object_create(enum tile_type type, int state)
+struct object *object_create(enum tile_type type, int state, int x, int y)
 {
   struct object *obj = malloc(sizeof(struct object));
 
@@ -18,6 +18,7 @@ struct object *object_create(enum tile_type type, int state)
   {
     case NONE:
       obj->state = state;
+      obj->rect = init_rect(
       break;
     case  WALL:
       obj->state = state;

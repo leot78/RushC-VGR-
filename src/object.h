@@ -1,6 +1,8 @@
 #ifndef OBJECT_H
 # define OBJECT_H
 
+#include <SDL2/SDL.h>
+
 #include "map.h"
 #include "vector2.h"
 
@@ -16,6 +18,7 @@ struct object
   enum tile_type type;
   unsigned state;
   struct vect2 *pos;
+  SDL_Rect rect;
 };
 
 struct object *object_create(enum tile_type type, int state);

@@ -13,6 +13,8 @@ struct map
   struct object ***objs;
   size_t width;
   size_t height;
+  size_t start_x;
+  size_t start_y;
 };
 
 struct map *map_init(size_t width, size_t height);

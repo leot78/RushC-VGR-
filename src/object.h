@@ -11,7 +11,8 @@ enum tile_type
 {
   NONE = ' ',
   PC = 'P',
-  WALL = 'W'
+  WALL = 'W',
+  START = 'S'
 };
 
 struct object

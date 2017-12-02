@@ -156,8 +156,8 @@ int main(int argc, char **argv)
   //SDL_Texture *message = msg_texture(font, "(Un)Lock Legacy", BLACK, renderer);
 
   //SDL_Rect Message_rect = init_rect(100, 0, 400, 100);
-  SDL_Rect r =  init_rect(16, 16, 16, 16);
-  struct player *player =  player_create(1, 1, 1);
+  SDL_Rect r =  init_rect(map->start_x * 16, map->start_y * 16, 16, 16);
+  struct player *player =  player_create(map->start_x, map->start_y, 1);
   SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
   SDL_RenderClear(renderer);
 

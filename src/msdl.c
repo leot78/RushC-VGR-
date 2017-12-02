@@ -102,7 +102,7 @@ int title(void)
         quit = 127;
     }
     render_text("(Un)Lock Legacy", pick_color(BLUE), renderer, txt_rect);
-    render_text("Start", pick_color(BLACK), renderer, start_rect);;
+    render_text("Start", pick_color(BLACK), renderer, start_rect);
     render_text("Exit", pick_color(BLACK), renderer, exit_rect);
     SDL_RenderPresent(renderer);
   }
@@ -122,7 +122,6 @@ int play(char *map_p)
   struct player *player =  player_create(map->start_x, map->start_y, 1);
   struct enemy **enemies = enemy_create_all(map->spawns, 10);
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-  SDL_Rect txt_rect = init_rect(1000,200,200,100);
   
   while (!quit)
   {
@@ -132,7 +131,6 @@ int play(char *map_p)
       if (e.type == SDL_QUIT)
         quit = 1;
     }
-    render_text("Life : 3", pick_color(BLUE), renderer, txt_rect);
     move(state, renderer, map, player);
     move_all_enemies(enemies, 10, map, renderer);
     SDL_RenderPresent(renderer);
@@ -154,8 +152,6 @@ int level_choice(void)
   SDL_Rect past_rect = init_rect(430, 300, 400, 100);
   SDL_Rect vj_rect = init_rect(430, 500, 400, 100);
   SDL_Rect mid_rect = init_rect(430, 800, 400, 100);
-
-
   
   while (!quit)
   {

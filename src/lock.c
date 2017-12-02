@@ -26,11 +26,10 @@ struct object *near_lock(struct player *p, struct map *map)
 }
 
 
-int unlock_pc(struct object *pc)
+char *unlock_pc(struct object *pc)
 {
   char *mdp = generate_string(10, 97, 123);
   pc->state = ON;
   pc->color = pick_color(BLUE);
-  printf("mdp: %s\n", mdp);
-  return 1;
+  return mdp;
 }

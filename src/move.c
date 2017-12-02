@@ -4,6 +4,8 @@
 #include "player.h"
 #include "move.h"
 #include "lock.h"
+#include "color.h"
+#include "text.h"
 
 int player_move_up(struct player *p, struct map *map)
 {
@@ -57,7 +59,13 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
     struct player *player)
 {
   int moved = 0;
-  if (state[SDL_SCANCODE_RIGHT])
+  static char *mdp = NULL;
+  SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
+  
+  if(mdp)
+    render_text(mdp, pick_color(WHITE), renderer, rect_mdp);
+  
+  else if (state[SDL_SCANCODE_RIGHT])
     moved = player_move_right(player, map);
 
   else if (state[SDL_SCANCODE_LEFT])
@@ -73,7 +81,7 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
   {
     struct object *obj = near_lock(player, map);
     if (obj)
-      unlock_pc(obj);
+      mdp = unlock_pc(obj);
   }
   moved = moved;
   SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);

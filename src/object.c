@@ -27,7 +27,8 @@ void object_pc(struct object *obj)
 struct object *object_create(enum tile_type type, int x, int y)
 {
   struct object *obj = malloc(sizeof(struct object));
-
+  obj->x = x;
+  obj->y = y;
   obj->type = type;
 
   obj->rect = init_rect(x * SIZE, y * SIZE, SIZE, SIZE);

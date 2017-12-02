@@ -5,7 +5,7 @@
 
 #include "map.h"
 
-#define RATIO_LOCK_PC 4
+#define RATIO_LOCK_PC 10
 
 enum state
 {

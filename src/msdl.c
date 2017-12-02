@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <err.h>
 #include <time.h>
@@ -25,10 +26,16 @@ void init(void)
     errx(127, "SDL could not initialize !");
   if( TTF_Init() == -1 ) 
     errx(127, "TTF could not initialize !");
+  if (SDL_Init(SDL_INIT_AUDIO) < 0) 
+    errx(127, "SDl audio could not initialize !");
+  Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
+  Mix_VolumeMusic(50);
+  Mix_Music *music = Mix_LoadMUS("../../sounds/game.mp3");
+  Mix_PlayMusic(music, 1);
 }
 
 SDL_Texture *msg_texture(TTF_Font *font, char *text, SDL_Color color, 
-                        SDL_Renderer *renderer)
+    SDL_Renderer *renderer)
 {
   SDL_Surface *text_surface = TTF_RenderText_Solid(font, text,color);
   SDL_Texture *message = SDL_CreateTextureFromSurface(renderer, text_surface);
@@ -58,15 +65,15 @@ SDL_Color pick_color(enum colors c)
   switch(c)
   {
     case BLACK:
-      color.r = 255;
-      color.g = 255;
-      color.b = 255;
+      color.r = 200;
+      color.g = 200;
+      color.b = 200;
       break;
 
     case RED:
-      color.r = 255;
-      color.g = 0;
-      color.b = 0;
+      color.r = 210;
+      color.g = 50;
+      color.b = 50;
       break;
 
     case WHITE:
@@ -82,9 +89,9 @@ SDL_Color pick_color(enum colors c)
       break;
 
     case BLUE:
-      color.r = 0;
-      color.g = 0;
-      color.b = 255;
+      color.r = 50;
+      color.g = 50;
+      color.b = 210;
       break;
 
     case GREY:
@@ -97,7 +104,7 @@ SDL_Color pick_color(enum colors c)
 }
 
 void move(SDL_Event e, SDL_Renderer *renderer, struct map *map, 
-          struct player *p)
+    struct player *p)
 {
   switch( e.key.keysym.sym )
   {
@@ -122,9 +129,32 @@ void move(SDL_Event e, SDL_Renderer *renderer, struct map *map,
       break;
 
     default:
+      SDL_RenderFillRect( renderer, &p->rect);
       break;
   }
 }
+
+
+void render_map_block(int i, int j, struct map *map, SDL_Renderer *renderer)
+{
+  struct object *obj = map->objs[i][j];
+  SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
+      obj->color.b, 0);
+  SDL_RenderFillRect( renderer, &obj->rect );
+}
+
+void render_map(struct map *map, SDL_Renderer *renderer)
+{
+
+  for (size_t j = 0; j < map->height; ++j)
+  {
+    for (size_t i = 0; i < map->width; ++i)
+    {
+      render_map_block(i, j, map, renderer);
+    }
+  }
+}
+
 
 int is_moving(SDL_Event e)
 {
@@ -137,7 +167,7 @@ int main(int argc, char **argv)
 {
   if (argc != 2)
     return -1;
-  
+
   srand(time(NULL));
   struct map *map = parse_map(argv[1]);
   init();
@@ -153,30 +183,10 @@ int main(int argc, char **argv)
   int quit = 0;
   SDL_Event e;
 
-  //SDL_Texture *message = msg_texture(font, "(Un)Lock Legacy", BLACK, renderer);
-
-  //SDL_Rect Message_rect = init_rect(100, 0, 400, 100);
-  SDL_Rect r =  init_rect(map->start_x * 16, map->start_y * 16, 16, 16);
   struct player *player =  player_create(map->start_x, map->start_y, 1);
-  SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
-  SDL_RenderClear(renderer);
-
-
-  //SDL_RenderCopy(renderer, message, NULL, &Message_rect);
-
-  for (size_t j = 0; j < map->height; ++j)
-  {
-    for (size_t i = 0; i < map->width; ++i)
-    {
-      struct object *obj = map->objs[i][j];
-      SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
-          obj->color.b, 0);
-      SDL_RenderFillRect( renderer, &obj->rect );
-    }
-  }
-  SDL_SetRenderDrawColor( renderer, 255, 0, 255, 255 );
-  SDL_RenderFillRect( renderer, &r );
-  //SDL_RenderFillRect(renderer, Message_rect);
+  render_map(map, renderer);
+  SDL_SetRenderDrawColor( renderer, 127, 57,  255, 255 );
+  SDL_RenderFillRect( renderer, &player->rect );
   SDL_RenderPresent(renderer);
   while (!quit)
   {
@@ -187,27 +197,14 @@ int main(int argc, char **argv)
 
       else if( e.type == SDL_KEYDOWN && is_moving(e))
       {
-        for (size_t j = 0; j < map->height; ++j)
-        {
-          for (size_t i = 0; i < map->width; ++i)
-          {
-            struct object *obj = map->objs[i][j];
-            SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
-                obj->color.b, 0);
-            SDL_RenderFillRect( renderer, &obj->rect );
-          }
-        }
-        struct object *obj = map->objs[player->x][player->y];
-        SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
-            obj->color.b, 0);
-        SDL_RenderFillRect( renderer, &obj->rect );
+        render_map_block(player->x, player->y, map, renderer);
         SDL_SetRenderDrawColor( renderer, 255, 0, 255, 255 );
         move(e, renderer, map, player);
         SDL_RenderPresent(renderer);
       }
-      SDL_Delay(20);
+      SDL_Delay(10);
     }
-    SDL_Delay(20);
+    SDL_Delay(10);
   }
   SDL_DestroyWindow(screen);
 

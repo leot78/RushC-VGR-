@@ -21,9 +21,10 @@ struct object
   unsigned state;
   struct vect2 *pos;
   SDL_Rect rect;
+  SDL_Color color;
 };
 
-struct object *object_create(enum tile_type type, int state);
+struct object *object_create(enum tile_type type, int state, int x, int y);
 void obj_delete(struct object *obj);
 void print_obj(struct object *obj);
 

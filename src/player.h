@@ -17,10 +17,5 @@ struct player
 struct player *player_create(int x, int y, int life);
 void player_delete(struct player *p);
 
-int player_move_up(struct player *p, struct map *map);
-int player_move_down(struct player *p, struct map *map);
-int player_move_right(struct player *p, struct map *map);
-int player_move_left(struct player *p, struct map *map);
-
 int near_lock(struct player *p, struct map *map);
 #endif /* !PLAYER_H */

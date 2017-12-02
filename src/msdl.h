@@ -3,12 +3,11 @@
 
 #include <SDL2/SDL.h>
 
-
-
 #define FONT "/usr/share/fonts/TTF/LiberationMono-Regular.ttf"
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 960
+#define MAX_SPAWN 5
 
 SDL_Rect init_rect(int x, int y, int w, int h);
 

@@ -17,6 +17,17 @@ struct enemy *enemy_create(int x, int y, int life)
   return e;
 }
 
+struct enemy **enemy_create_all(struct object *spawns[MAX_SPAWN], size_t number)
+{
+  struct enemy **enemies = malloc(sizeof(struct enemy *) * number);
+  for (size_t i = 0; i < number; i++)
+  {
+    struct object *obj = spawns[i % MAX_SPAWN];
+    enemies[i] = enemy_create(obj->x, obj->y, 1);
+  }
+  return enemies;
+}
+
 void enemy_delete(struct enemy *e)
 {
   player_delete(e->p);

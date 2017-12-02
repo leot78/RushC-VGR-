@@ -35,6 +35,9 @@ struct map *parse_map(const char *pathname)
   fgets(s, 10, file);
   size_t height = atoi(s);
 
+
+  size_t count_sp = 0;
+
   struct map *map = map_init(width, height);
 
   struct object ***objs = map->objs;
@@ -51,6 +54,8 @@ struct map *parse_map(const char *pathname)
         map->start_x = i;
         map->start_y = j;
       }
+      else if (c == 'E')
+        map->spawns[count_sp++] = objs[i][j];
     }
   }
 

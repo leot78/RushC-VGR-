@@ -7,6 +7,7 @@
 
 #define MAP_HEIGHT 30
 #define MAP_WIDTH 40
+#define MAX_SPAWN 5
 
 struct map
 {
@@ -15,6 +16,7 @@ struct map
   size_t height;
   size_t start_x;
   size_t start_y;
+  struct object *spawns[MAX_SPAWN];
 };
 
 struct map *map_init(size_t width, size_t height);

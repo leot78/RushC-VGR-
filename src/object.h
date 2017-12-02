@@ -11,7 +11,7 @@ enum state
 {
   ON,
   LOCK,
-  BROKEN
+  BROKE
 };
 
 enum tile_type
@@ -19,11 +19,14 @@ enum tile_type
   NONE = ' ',
   PC = 'P',
   WALL = 'W',
-  START = 'S'
+  START = 'S',
+  SPAWN = 'E'
 };
 
 struct object
 {
+  size_t x;
+  size_t y;
   enum tile_type type;
   enum state state;
   SDL_Rect rect;

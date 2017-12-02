@@ -1,5 +1,6 @@
 #include <stdlib.h>
 
+#include "msdl.h"
 #include "vector2.h"
 #include "player.h"
 
@@ -7,9 +8,11 @@ struct player *player_create(int x, int y, int life)
 {
   struct player *p = malloc(sizeof(struct player));
 
-  p->pos = vect2_create(x, y);
+  p->x = x;
+  p->y = y;
   p->life = life;
-
+  p->rect = init_rect(16, 16, x * 16, y * 16);
+  p->color = pick_color(RED);
   return p;
 }
 
@@ -19,38 +22,3 @@ void player_delete(struct player *p)
   free(p);
 }
 
-void player_move_up(struct player *p, struct map *map)
-{
-  struct vect2 *v = vect2_create(p->pos->x, p->pos->y - 1);
-  if (check_vector(map, v))
-    --p->pos->y;
-
-  vect2_delete(v);
-}
-
-void player_move_down(struct player *p, struct map *map)
-{
-  struct vect2 *v = vect2_create(p->pos->x, p->pos->y + 1);
-  if (check_vector(map, v))
-    ++p->pos->y;
-
-  vect2_delete(v);
-}
-
-void player_move_right(struct player *p, struct map *map)
-{
-  struct vect2 *v = vect2_create(p->pos->x + 1, p->pos->y);
-  if (check_vector(map, v))
-    ++p->pos->x;
-
-  vect2_delete(v);
-}
-
-void player_move_left(struct player *p, struct map *map)
-{
-  struct vect2 *v = vect2_create(p->pos->x - 1, p->pos->y);
-  if (check_vector(map, v))
-    --p->pos->x;
-
-  vect2_delete(v);
-}

@@ -3,6 +3,7 @@
 #include "object.h"
 #include "player.h"
 #include "move.h"
+#include "lock.h"
 
 int player_move_up(struct player *p, struct map *map)
 {
@@ -69,10 +70,12 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
     moved = player_move_down(player, map);
 
   else if (state[SDL_SCANCODE_RETURN])
-    near_lock(player, map);
-
+  {
+    struct object *obj = near_lock(player, map);
+    if (obj)
+      unlock_pc(obj);
+  }
+  moved = moved;
   SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);
   SDL_RenderFillRect(renderer, &player->rect);
-  if (moved)
-    SDL_Delay(40);
 }

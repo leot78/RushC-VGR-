@@ -103,35 +103,27 @@ SDL_Color pick_color(enum colors c)
   return color;
 }
 
-void move(SDL_Event e, SDL_Renderer *renderer, struct map *map, 
-    struct player *p)
+void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map, 
+    struct player *player)
 {
-  switch( e.key.keysym.sym )
-  {
-    case SDLK_UP:
-      player_move_up(p, map);
-      SDL_RenderFillRect( renderer, &p->rect);
-      break;
+    if(state[SDL_SCANCODE_RIGHT])
+      player_move_right(player, map);
 
-    case SDLK_DOWN:
-      player_move_down(p, map);
-      SDL_RenderFillRect( renderer, &p->rect);
-      break;
+    else if(state[SDL_SCANCODE_LEFT])
+      player_move_left(player, map);
 
-    case SDLK_LEFT:
-      player_move_left(p, map);
-      SDL_RenderFillRect( renderer, &p->rect);
-      break;
+    else if(state[SDL_SCANCODE_UP])
+      player_move_up(player, map);
 
-    case SDLK_RIGHT:
-      player_move_right(p, map);
-      SDL_RenderFillRect( renderer, &p->rect);
-      break;
+    else if(state[SDL_SCANCODE_DOWN])
+      player_move_down(player, map);
 
-    default:
-      SDL_RenderFillRect( renderer, &p->rect);
-      break;
-  }
+    else
+      return;
+
+    SDL_RenderFillRect( renderer, &player->rect);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(100);
 }
 
 
@@ -188,23 +180,18 @@ int main(int argc, char **argv)
   SDL_SetRenderDrawColor( renderer, 127, 57,  255, 255 );
   SDL_RenderFillRect( renderer, &player->rect );
   SDL_RenderPresent(renderer);
+  const Uint8 *state = SDL_GetKeyboardState(NULL);
+
   while (!quit)
   {
     while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_QUIT)
         quit = 1;
-
-      else if( e.type == SDL_KEYDOWN && is_moving(e))
-      {
-        render_map_block(player->x, player->y, map, renderer);
-        SDL_SetRenderDrawColor( renderer, 255, 0, 255, 255 );
-        move(e, renderer, map, player);
-        SDL_RenderPresent(renderer);
-      }
       SDL_Delay(10);
     }
-    SDL_Delay(10);
+    move(state, renderer, map, player);
+
   }
   SDL_DestroyWindow(screen);
 

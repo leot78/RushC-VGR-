@@ -100,7 +100,7 @@ int title(void)
           || (e.type == SDL_MOUSEBUTTONDOWN && in_rect(exit_rect)))
         quit = 127;
 
-      if (e.key.keysym.sym == SDLK_ESCAPE)
+      if (e.key.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
         quit = 127;
     }
     render_text("(Un)Lock Legacy", pick_color(BLUE), renderer, txt_rect);
@@ -130,10 +130,11 @@ int play(char *map_p)
     while (SDL_PollEvent(&e) != 0)
     {
       if (e.key.type == SDL_KEYDOWN)
-      move(e, renderer, map, player);
-
-      if (e.key.keysym.sym == SDLK_ESCAPE)
-        quit = 127;
+      {
+        move(e, renderer, map, player);
+        if (e.key.keysym.sym == SDLK_ESCAPE)
+          quit = 127;
+      }
     }
     render_map(map, renderer);
     SDL_SetRenderDrawColor(renderer,127,57,255,255);
@@ -171,7 +172,7 @@ int level_choice(void)
         quit = 4;
       if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(mid_rect))
         quit = 5;
-      if (e.key.keysym.sym == SDLK_ESCAPE)
+      if (e.key.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
         quit = 127;
     }
     render_text("LabSR_SM14", pick_color(BLUE), renderer, sr_rect);

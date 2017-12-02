@@ -7,8 +7,8 @@
 
 #define FONT "/usr/share/fonts/TTF/LiberationMono-Regular.ttf"
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 960
 
 enum colors
 {

@@ -92,7 +92,7 @@ void play(char *map_p)
     }
     move(state, renderer, map, player);
     SDL_RenderPresent(renderer);
-    SDL_Delay(40);
+    SDL_Delay(60);
   }
 
 }

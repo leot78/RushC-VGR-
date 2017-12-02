@@ -99,30 +99,23 @@ void move(SDL_Renderer *renderer, SDL_Rect *r, SDL_Event e)
   switch( e.key.keysym.sym )
   {
     case SDLK_UP:
-      r->y -= 10;
+      r->y -= 16;
       SDL_RenderFillRect( renderer, r );
-      SDL_RenderPresent(renderer);
       break;
 
     case SDLK_DOWN:
-      r->y += 10;
+      r->y += 16;
       SDL_RenderFillRect( renderer, r );
-
-      SDL_RenderPresent(renderer);
       break;
 
     case SDLK_LEFT:
-      r->x -= 10;
+      r->x -= 16;
       SDL_RenderFillRect( renderer, r );
-
-      SDL_RenderPresent(renderer);
       break;
 
     case SDLK_RIGHT:
-      r->x += 10;
+      r->x += 16;
       SDL_RenderFillRect( renderer, r );
-
-      SDL_RenderPresent(renderer);
       break;
 
     default:
@@ -152,45 +145,48 @@ int main(int argc, char **argv)
   SDL_Event e;
 /*
   SDL_Texture *message = msg_texture(font, "(Un)Lock Legacy", color, renderer);
-  
-  SDL_Rect Message_rect = init_rect(100, 0, 400, 100);
-  SDL_Rect r =  init_rect(50, 50, 50, 50);
-*/
+ 
+  SDL_Rect Message_rect = init_rect(100, 0, 400, 100);*/
+  SDL_Rect r =  init_rect(16, 16, 16, 16);
+
   SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
   SDL_RenderClear(renderer);
 
-/*
-  SDL_RenderCopy(renderer, message, NULL, &Message_rect);
+
+  //SDL_RenderCopy(renderer, message, NULL, &Message_rect);
   SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
   SDL_RenderFillRect( renderer, &r );
-*/
   for (size_t j = 0; j < map->height; ++j)
   {
     for (size_t i = 0; i < map->width; ++i)
     {
       struct object *obj = map->objs[i][j];
       SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
-                             obj->color.b, 0);
-      SDL_RenderCopy(renderer, NULL, NULL, &obj->rect);
+          obj->color.b, 0);
+      SDL_RenderFillRect( renderer, &obj->rect );
     }
   }
-  SDL_RenderPresent(renderer);
 
+  SDL_RenderPresent(renderer);
   while (!quit)
   {
     while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_QUIT)
         quit = 1;
-      /*
-         else if( e.type == SDL_KEYDOWN )
-         {
-         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
-         SDL_RenderClear( renderer );
-         SDL_RenderCopy(renderer, message, NULL, &Message_rect);
-         SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
-         move(renderer, &r, e);
-         }*/
+
+      else if( e.type == SDL_KEYDOWN )
+      {
+        struct object *obj = map->objs[r.x/16][r.y/16];
+        SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
+            obj->color.b, 0);
+        SDL_RenderFillRect( renderer, &obj->rect );
+        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+        SDL_SetRenderDrawColor( renderer, 255, 0, 255, 255 );
+        move(renderer, &r, e);
+        SDL_RenderPresent(renderer);
+
+      }
     }
   }
   SDL_DestroyWindow(screen);

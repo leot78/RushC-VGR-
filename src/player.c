@@ -1,7 +1,6 @@
 #include <stdlib.h>
 
 #include "msdl.h"
-#include "vector2.h"
 #include "player.h"
 
 struct player *player_create(int x, int y, int life)
@@ -18,7 +17,6 @@ struct player *player_create(int x, int y, int life)
 
 void player_delete(struct player *p)
 {
-  vect2_delete(p->pos);
   free(p);
 }
 

@@ -3,8 +3,6 @@
 
 #include <SDL2/SLD.h>
 
-#include "vector2.h"
-
 struct player
 {
   int x;

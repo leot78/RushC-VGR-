@@ -4,7 +4,6 @@
 #include <SDL2/SDL.h>
 
 #include "map.h"
-#include "vector2.h"
 
 #define RATIO_LOCK_PC 4
 
@@ -19,7 +18,6 @@ struct object
 {
   enum tile_type type;
   unsigned state;
-  struct vect2 *pos;
   SDL_Rect rect;
   SDL_Color color;
 };

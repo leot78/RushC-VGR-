@@ -5,7 +5,6 @@
 #include "msdl.h"
 #include "map.h"
 #include "object.h"
-#include "vector2.h"
 
 void object_pc(struct object *obj)
 {

@@ -11,6 +11,7 @@ set (SRC
   lock.c
   enemy.c
   color.c
+  random_string_gen.c
   )
 
 add_library(game SHARED ${SRC})

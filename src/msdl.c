@@ -87,7 +87,11 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
     moved = player_move_down(player, map);
 
   else if (state[SDL_SCANCODE_RETURN])
-    near_lock(player, map);
+  {
+    struct object *obj = near_lock(player, map);
+    if (obj)
+      unlock_pc(obj);
+  }
 
   SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);
   SDL_RenderFillRect(renderer, &player->rect);

@@ -17,5 +17,5 @@ struct player
 struct player *player_create(int x, int y, int life);
 void player_delete(struct player *p);
 
-int near_lock(struct player *p, struct map *map);
+struct object *near_lock(struct player *p, struct map *map);
 #endif /* !PLAYER_H */

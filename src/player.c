@@ -19,4 +19,3 @@ void player_delete(struct player *p)
 {
   free(p);
 }
-

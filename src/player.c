@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <SDL2/SDL.h>
 
 #include "msdl.h"
 #include "player.h"

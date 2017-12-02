@@ -27,9 +27,6 @@ SDL_Window* get_screen(void)
   return screen;
 }
 
-
-
-
 void init(void)
 {
   if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -56,7 +53,6 @@ SDL_Rect init_rect(int x, int y, int w, int h)
 
 void render_map(struct map *map, SDL_Renderer *renderer)
 {
-
   for (size_t j = 0; j < map->height; ++j)
   {
     for (size_t i = 0; i < map->width; ++i)
@@ -72,7 +68,6 @@ void render_map(struct map *map, SDL_Renderer *renderer)
         print_sprite(PCULOCK, obj->rect, renderer);
       if (obj->type == PC && obj->state == LOCK)
         print_sprite(PCLOCK, obj->rect, renderer);
-
     }
   }
 }
@@ -134,8 +129,9 @@ int play(char *map_p)
       SDL_RENDERER_ACCELERATED);
   SDL_Event e;
   int quit = 0;
+  int nbe = 20;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
-  struct enemy **enemies = enemy_create_all(map->spawns, 10, 2);
+  struct enemy **enemies = enemy_create_all(map->spawns, nbe, 2);
   SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
   g_mdp = NULL;
 
@@ -153,14 +149,12 @@ int play(char *map_p)
         move(e, renderer, map, player);
     }
     render_map(map, renderer);
-    move_all_enemies(enemies, 10, map, renderer);
+    move_all_enemies(enemies, nbe, map, renderer);
     print_sprite(PLAYER, player->rect, renderer);
     if (g_mdp)
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
-
-
     SDL_RenderPresent(renderer);
-    SDL_Delay(60);
+    SDL_Delay(40);
   }
   SDL_DestroyRenderer(renderer);
   free(player);

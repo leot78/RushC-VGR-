@@ -11,8 +11,8 @@
 void move_all_enemies(struct enemy **enemies, size_t number, struct map *map, 
                       SDL_Renderer *renderer)
 {
-    for (size_t i = 0; i < number; i++)
-      move_enemy(enemies[i], map, renderer);
+  for (size_t i = 0; i < number; i++)
+    move_enemy(enemies[i], map, renderer);
 }
 
 struct enemy *enemy_create(int x, int y, int life, int speed)

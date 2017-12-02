@@ -11,6 +11,7 @@
 #include "object.h"
 #include "move.h"
 #include "lock.h"
+#include "text.h"
 #include "color.h"
 #include "enemy.h"
 
@@ -38,14 +39,6 @@ void init(void)
   Mix_PlayMusic(music, 1);
 }
 
-SDL_Texture *msg_texture(TTF_Font *font, char *text, SDL_Color color, 
-    SDL_Renderer *renderer)
-{
-  SDL_Surface *text_surface = TTF_RenderText_Solid(font, text,color);
-  SDL_Texture *message = SDL_CreateTextureFromSurface(renderer, text_surface);
-  return message;
-}
-
 SDL_Rect init_rect(int x, int y, int w, int h)
 {
   SDL_Rect rect;
@@ -71,7 +64,53 @@ void render_map(struct map *map, SDL_Renderer *renderer)
   }
 }
 
-void play(char *map_p)
+int in_rect(SDL_Rect rec)
+{
+  int x = 0;
+  int y = 0;
+  int rx = rec.x;
+  int ry = rec.y;
+  int rw = rec.w;
+  int rh = rec.h;
+  SDL_GetMouseState(&x, &y);
+  return x > rx && x < rx + rw && y > ry && y < ry + rh;
+}
+
+int title(void)
+{
+  SDL_Window *screen = get_screen();
+  SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
+                                              SDL_RENDERER_ACCELERATED);
+  int quit = 0;
+  SDL_Event e;
+  SDL_Rect txt_rect = init_rect(430,100,400,100);
+  SDL_Rect start_rect = init_rect(430, 300, 400, 100);
+  SDL_Rect exit_rect = init_rect(430, 500, 400, 100);
+
+  
+  while (!quit)
+  {
+    if (SDL_PollEvent(&e) != 0)
+    {
+      if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(start_rect))
+      {
+        printf("START");
+        quit = 1;
+      }
+      if (e.type == SDL_QUIT 
+          || (e.type == SDL_MOUSEBUTTONDOWN && in_rect(exit_rect)))
+        quit = 127;
+    }
+    render_text("(Un)Lock Legacy", pick_color(BLUE), renderer, txt_rect);
+    render_text("Start", pick_color(BLACK), renderer, start_rect);;
+    render_text("Exit", pick_color(BLACK), renderer, exit_rect);
+    SDL_RenderPresent(renderer);
+  }
+  SDL_DestroyRenderer(renderer);
+  return quit;
+}
+
+int play(char *map_p)
 {
 
   struct map *map = parse_map(map_p);
@@ -82,6 +121,8 @@ void play(char *map_p)
   SDL_Event e;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
   const Uint8 *state = SDL_GetKeyboardState(NULL);
+  SDL_Rect txt_rect = init_rect(1000,200,200,100);
+  
   while (!quit)
   {
     render_map(map, renderer);
@@ -90,28 +131,81 @@ void play(char *map_p)
       if (e.type == SDL_QUIT)
         quit = 1;
     }
+    render_text("Life : 3", pick_color(BLUE), renderer, txt_rect);
     move(state, renderer, map, player);
     SDL_RenderPresent(renderer);
     SDL_Delay(60);
   }
-
+  SDL_DestroyRenderer(renderer);
+  free(player);
+  return 0;
 }
 
-void game(char *map)
+int level_choice(void)
 {
+  SDL_Window *screen = get_screen();
+  SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
+                                              SDL_RENDERER_ACCELERATED);
+  int quit = 0;
+  SDL_Event e;
+  SDL_Rect sr_rect = init_rect(430,100,400,100);
+  SDL_Rect past_rect = init_rect(430, 300, 400, 100);
+  SDL_Rect vj_rect = init_rect(430, 500, 400, 100);
+  SDL_Rect mid_rect = init_rect(430, 800, 400, 100);
+
+
   
-  play(map);
+  while (!quit)
+  {
+    if (SDL_PollEvent(&e) != 0)
+    {
+      if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(sr_rect))
+        quit = 2;
+      if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(past_rect))
+        quit = 3;
+      if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(vj_rect))
+        quit = 4;
+      if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(mid_rect))
+        quit = 5;
+      if (e.type == SDL_QUIT)
+        quit = 127;
+    }
+    render_text("LabSR_SM14", pick_color(BLUE), renderer, sr_rect);
+    render_text("Pasteur", pick_color(BLACK), renderer, past_rect);;
+    render_text("Villejuif", pick_color(BLACK), renderer, vj_rect);
+    render_text("MidLab", pick_color(BLACK), renderer, mid_rect);
+    SDL_RenderPresent(renderer);
+  }
+  SDL_DestroyRenderer(renderer);
+  return quit;
 }
 
-int main(int argc, char **argv)
+void game(void)
 {
-  if (argc != 2)
-    return -1;
+  int menu = 0;
+  while (menu != 127)
+  {
+    if (menu == 0)
+      menu = title();
+    else if (menu == 1)
+      menu = level_choice();
+    else if (menu == 2)
+      menu = play("../../maps/LabSR_SM14.map");
+    else if (menu == 3)
+      menu = play("../../maps/pasteur.map");
+    else if (menu == 4)
+      menu = play("../../maps/VJ.map");
+    else if (menu == 5)
+      menu = play("../../maps/midlab.map");
+  }
+}
 
+int main(void)
+{
   srand(time(NULL));
   init();
   SDL_Window *screen = get_screen();
-  game(argv[1]);
+  game();
   SDL_DestroyWindow(screen);
 
   SDL_Quit();

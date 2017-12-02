@@ -5,6 +5,7 @@
 
 #include "map.h"
 #include "object.h"
+#include "msdl.h"
 
 struct map *map_init(size_t width, size_t height)
 {
@@ -44,7 +45,7 @@ struct map *parse_map(const char *pathname)
       int c = fgetc(file);
       if (c == '\n')
         c = fgetc(file);
-      objs[i][j] = object_create(c, 0, x, y);
+      objs[i][j] = object_create(c, 0, i, j);
     }
   }
 

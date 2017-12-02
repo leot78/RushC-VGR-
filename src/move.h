@@ -12,7 +12,7 @@ int player_move_down(struct player *p, struct map *map);
 int player_move_right(struct player *p, struct map *map);
 int player_move_left(struct player *p, struct map *map);
 
-void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
+void move(SDL_Event e, SDL_Renderer *renderer, struct map *map,
           struct player *player);
 
 #endif /* !MOVE_H*/

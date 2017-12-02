@@ -86,8 +86,6 @@ int title(void)
   SDL_Rect txt_rect = init_rect(430,100,400,100);
   SDL_Rect start_rect = init_rect(430, 300, 400, 100);
   SDL_Rect exit_rect = init_rect(430, 500, 400, 100);
-  const Uint8 *state = SDL_GetKeyboardState(NULL);
-
   
   while (!quit)
   {
@@ -101,9 +99,10 @@ int title(void)
       if (e.type == SDL_QUIT 
           || (e.type == SDL_MOUSEBUTTONDOWN && in_rect(exit_rect)))
         quit = 127;
+
+      if (e.key.keysym.sym == SDLK_ESCAPE)
+        quit = 127;
     }
-    if (state[SDL_SCANCODE_ESCAPE])
-      quit = 127;
     render_text("(Un)Lock Legacy", pick_color(BLUE), renderer, txt_rect);
     render_text("Start", pick_color(BLACK), renderer, start_rect);
     render_text("Exit", pick_color(BLACK), renderer, exit_rect);
@@ -121,18 +120,24 @@ int play(char *map_p)
   SDL_Window *screen = get_screen();
   SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
                                               SDL_RENDERER_ACCELERATED);
+  SDL_Event e;
   int quit = 0;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
   struct enemy **enemies = enemy_create_all(map->spawns, 10);
-  const Uint8 *state = SDL_GetKeyboardState(NULL);
   
   while (!quit)
   {
+    while (SDL_PollEvent(&e) != 0)
+    {
+      move(e, renderer, map, player);
+
+      if (e.key.keysym.sym == SDLK_ESCAPE)
+        quit = 127;
+    }
     render_map(map, renderer);
-    move(state, renderer, map, player);
+    SDL_SetRenderDrawColor(renderer,127,57,255,255);
+    SDL_RenderFillRect(renderer, &player->rect);
     move_all_enemies(enemies, 10, map, renderer);
-    if (state[SDL_SCANCODE_ESCAPE])
-      quit = 127;
     SDL_RenderPresent(renderer);
     SDL_Delay(60);
   }
@@ -153,7 +158,6 @@ int level_choice(void)
   SDL_Rect vj_rect = init_rect(430, 500, 400, 100);
   SDL_Rect mid_rect = init_rect(430, 800, 400, 100);
   
-  const Uint8 *state = SDL_GetKeyboardState(NULL);
   while (!quit)
   {
     if (SDL_PollEvent(&e) != 0)
@@ -166,9 +170,9 @@ int level_choice(void)
         quit = 4;
       if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(mid_rect))
         quit = 5;
+      if (e.key.keysym.sym == SDLK_ESCAPE)
+        quit = 127;
     }
-    if (state[SDL_SCANCODE_ESCAPE])
-      quit = 127;
     render_text("LabSR_SM14", pick_color(BLUE), renderer, sr_rect);
     render_text("Pasteur", pick_color(BLACK), renderer, past_rect);;
     render_text("Villejuif", pick_color(BLACK), renderer, vj_rect);

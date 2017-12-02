@@ -55,7 +55,7 @@ int player_move_left(struct player *p, struct map *map)
   return 0;
 }
 
-void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map, 
+void move(SDL_Event e, SDL_Renderer *renderer, struct map *map, 
     struct player *player)
 {
   int moved = 0;
@@ -65,19 +65,19 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
   if(mdp)
     render_text(mdp, pick_color(WHITE), renderer, rect_mdp);
   
-  else if (state[SDL_SCANCODE_RIGHT])
+  if (e.key.keysym.sym == SDLK_RIGHT)
     moved = player_move_right(player, map);
 
-  else if (state[SDL_SCANCODE_LEFT])
+  if (e.key.keysym.sym == SDLK_LEFT)
     moved = player_move_left(player, map);
 
-  else if (state[SDL_SCANCODE_UP])
+  if (e.key.keysym.sym == SDLK_UP)
     moved = player_move_up(player, map);
 
-  else if (state[SDL_SCANCODE_DOWN])
+  if (e.key.keysym.sym == SDLK_DOWN)
     moved = player_move_down(player, map);
 
-  else if (state[SDL_SCANCODE_RETURN])
+  if (e.key.keysym.sym == SDLK_RETURN)
   {
     struct object *obj = near_lock(player, map);
     if (obj)

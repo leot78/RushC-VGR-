@@ -131,8 +131,6 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
     struct player *player)
 {
   int moved = 0;
-  int i = player->x;
-  int j = player->y;
   if(state[SDL_SCANCODE_RIGHT])
     moved = player_move_right(player, map);
 
@@ -145,16 +143,10 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
   else if(state[SDL_SCANCODE_DOWN])
     moved = player_move_down(player, map);
 
-  else
-    return;
-
+  SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);
+  SDL_RenderFillRect(renderer, &player->rect);
   if (moved)
-    render_map_block(i, j, map, renderer);
-  
-  SDL_SetRenderDrawColor( renderer, 127, 57,  255, 255 );
-  SDL_RenderFillRect( renderer, &player->rect);
-  SDL_RenderPresent(renderer);
-  SDL_Delay(100);
+    SDL_Delay(50);
 }
 
 int main(int argc, char **argv)
@@ -186,13 +178,15 @@ int main(int argc, char **argv)
 
   while (!quit)
   {
-    while (SDL_PollEvent(&e) != 0)
+    render_map(map, renderer);
+    if (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_QUIT)
         quit = 1;
-      SDL_Delay(10);
     }
     move(state, renderer, map, player);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(50);
   }
   SDL_DestroyWindow(screen);
 

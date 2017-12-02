@@ -103,28 +103,7 @@ SDL_Color pick_color(enum colors c)
   return color;
 }
 
-void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map, 
-    struct player *player)
-{
-    if(state[SDL_SCANCODE_RIGHT])
-      player_move_right(player, map);
 
-    else if(state[SDL_SCANCODE_LEFT])
-      player_move_left(player, map);
-
-    else if(state[SDL_SCANCODE_UP])
-      player_move_up(player, map);
-
-    else if(state[SDL_SCANCODE_DOWN])
-      player_move_down(player, map);
-
-    else
-      return;
-
-    SDL_RenderFillRect( renderer, &player->rect);
-    SDL_RenderPresent(renderer);
-    SDL_Delay(100);
-}
 
 
 void render_map_block(int i, int j, struct map *map, SDL_Renderer *renderer)
@@ -147,14 +126,36 @@ void render_map(struct map *map, SDL_Renderer *renderer)
   }
 }
 
-
-int is_moving(SDL_Event e)
+void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map, 
+    struct player *player)
 {
-  if(e.key.keysym.sym == SDLK_UP || e.key.keysym.sym == SDLK_DOWN ||
-      e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT)
-    return 1;
-  return 0;
+  int moved = 0;
+  int i = player->x;
+  int j = player->y;
+  if(state[SDL_SCANCODE_RIGHT])
+    moved = player_move_right(player, map);
+
+  else if(state[SDL_SCANCODE_LEFT])
+    moved = player_move_left(player, map);
+
+  else if(state[SDL_SCANCODE_UP])
+    moved = player_move_up(player, map);
+
+  else if(state[SDL_SCANCODE_DOWN])
+    moved = player_move_down(player, map);
+
+  else
+    return;
+
+  if (moved)
+    render_map_block(i, j, map, renderer);
+  
+  SDL_SetRenderDrawColor( renderer, 127, 57,  255, 255 );
+  SDL_RenderFillRect( renderer, &player->rect);
+  SDL_RenderPresent(renderer);
+  SDL_Delay(100);
 }
+
 int main(int argc, char **argv)
 {
   if (argc != 2)
@@ -191,7 +192,6 @@ int main(int argc, char **argv)
       SDL_Delay(10);
     }
     move(state, renderer, map, player);
-
   }
   SDL_DestroyWindow(screen);
 

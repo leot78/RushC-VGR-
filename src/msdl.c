@@ -9,6 +9,7 @@
 #include "map.h"
 #include "player.h"
 #include "object.h"
+#include "move.h"
 
 SDL_Window* get_screen(void)
 {

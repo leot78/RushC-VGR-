@@ -4,6 +4,8 @@
 
 #include "msdl.h"
 #include "enemy.h"
+#include "move.h"
+#include "player.h"
 
 struct enemy *enemy_create(int x, int y, life)
 {

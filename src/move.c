@@ -2,8 +2,7 @@
 #include "map.h"
 #include "object.h"
 #include "player.h"
-
-#define SIZE 32
+#include "move.h"
 
 int player_move_up(struct player *p, struct map *map)
 {

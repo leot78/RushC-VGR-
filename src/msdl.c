@@ -123,11 +123,18 @@ void move(SDL_Renderer *renderer, SDL_Rect *r, SDL_Event e)
   }
 }
 
+int is_moving(SDL_Event e)
+{
+  if(e.key.keysym.sym == SDLK_UP || e.key.keysym.sym == SDLK_DOWN ||
+      e.key.keysym.sym == SDLK_LEFT || e.key.keysym.sym == SDLK_RIGHT)
+    return 1;
+  return 0;
+}
 int main(int argc, char **argv)
 {
   if (argc != 2)
     return -1;
-  
+
   struct map *map = parse_map(argv[1]);
   init();
 
@@ -139,23 +146,20 @@ int main(int argc, char **argv)
 
   SDL_Renderer* renderer = NULL;
   renderer =  SDL_CreateRenderer( screen, -1, SDL_RENDERER_ACCELERATED);
-  //SDL_Color color = {255, 255, 255, 0}; 
-
   int quit = 0;
   SDL_Event e;
-/*
-  SDL_Texture *message = msg_texture(font, "(Un)Lock Legacy", color, renderer);
- 
-  SDL_Rect Message_rect = init_rect(100, 0, 400, 100);*/
+
+  //SDL_Texture *message = msg_texture(font, "(Un)Lock Legacy", BLACK, renderer);
+
+  //SDL_Rect Message_rect = init_rect(100, 0, 400, 100);
   SDL_Rect r =  init_rect(16, 16, 16, 16);
 
-  SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+  SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
   SDL_RenderClear(renderer);
 
 
   //SDL_RenderCopy(renderer, message, NULL, &Message_rect);
-  SDL_SetRenderDrawColor( renderer, 0, 0, 255, 255 );
-  SDL_RenderFillRect( renderer, &r );
+
   for (size_t j = 0; j < map->height; ++j)
   {
     for (size_t i = 0; i < map->width; ++i)
@@ -166,7 +170,9 @@ int main(int argc, char **argv)
       SDL_RenderFillRect( renderer, &obj->rect );
     }
   }
-
+  SDL_SetRenderDrawColor( renderer, 255, 0, 255, 255 );
+  SDL_RenderFillRect( renderer, &r );
+  //SDL_RenderFillRect(renderer, Message_rect);
   SDL_RenderPresent(renderer);
   while (!quit)
   {
@@ -175,17 +181,15 @@ int main(int argc, char **argv)
       if (e.type == SDL_QUIT)
         quit = 1;
 
-      else if( e.type == SDL_KEYDOWN )
+      else if( e.type == SDL_KEYDOWN && is_moving(e))
       {
         struct object *obj = map->objs[r.x/16][r.y/16];
         SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
             obj->color.b, 0);
         SDL_RenderFillRect( renderer, &obj->rect );
-        SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
         SDL_SetRenderDrawColor( renderer, 255, 0, 255, 255 );
         move(renderer, &r, e);
         SDL_RenderPresent(renderer);
-
       }
     }
   }

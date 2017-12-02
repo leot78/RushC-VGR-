@@ -129,6 +129,7 @@ int play(char *map_p)
   {
     while (SDL_PollEvent(&e) != 0)
     {
+      if (e.key.type == SDL_KEYDOWN)
       move(e, renderer, map, player);
 
       if (e.key.keysym.sym == SDLK_ESCAPE)

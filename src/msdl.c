@@ -55,23 +55,6 @@ SDL_Rect init_rect(int x, int y, int w, int h)
   return rect;
 }
 
-void render_rec(SDL_Renderer *renderer, SDL_Rect *rect, SDL_Color color)
-{
-  SDL_SetRenderDrawColor( renderer, color.r , color.g, color.b, color.a);
-  SDL_RenderFillRect( renderer, rect );
-}
-
-
-
-
-void render_map_block(int i, int j, struct map *map, SDL_Renderer *renderer)
-{
-  struct object *obj = map->objs[i][j];
-  SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
-      obj->color.b, 0);
-  SDL_RenderFillRect( renderer, &obj->rect );
-}
-
 void render_map(struct map *map, SDL_Renderer *renderer)
 {
 
@@ -79,7 +62,10 @@ void render_map(struct map *map, SDL_Renderer *renderer)
   {
     for (size_t i = 0; i < map->width; ++i)
     {
-      render_map_block(i, j, map, renderer);
+      struct object *obj = map->objs[i][j];
+      SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
+          obj->color.b, 0);
+      SDL_RenderFillRect( renderer, &obj->rect );
     }
   }
 }
@@ -99,43 +85,27 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
 
   else if (state[SDL_SCANCODE_DOWN])
     moved = player_move_down(player, map);
-  
+
   else if (state[SDL_SCANCODE_RETURN])
     near_lock(player, map);
-  
+
   SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);
   SDL_RenderFillRect(renderer, &player->rect);
   if (moved)
     SDL_Delay(40);
 }
 
-int main(int argc, char **argv)
+void play(char *map_p)
 {
-  if (argc != 2)
-    return -1;
 
-  srand(time(NULL));
-  struct map *map = parse_map(argv[1]);
-  init();
-
-  TTF_Font *font = TTF_OpenFont(FONT, 172);
-  if (!font)
-    return -1;
-
+  struct map *map = parse_map(map_p);
   SDL_Window *screen = get_screen();
-
-  SDL_Renderer* renderer = NULL;
-  renderer =  SDL_CreateRenderer( screen, -1, SDL_RENDERER_ACCELERATED);
+  SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
+                                              SDL_RENDERER_ACCELERATED);
   int quit = 0;
   SDL_Event e;
-
   struct player *player =  player_create(map->start_x, map->start_y, 1);
-  render_map(map, renderer);
-  SDL_SetRenderDrawColor( renderer, 127, 57,  255, 255 );
-  SDL_RenderFillRect( renderer, &player->rect );
-  SDL_RenderPresent(renderer);
   const Uint8 *state = SDL_GetKeyboardState(NULL);
-
   while (!quit)
   {
     render_map(map, renderer);
@@ -148,6 +118,24 @@ int main(int argc, char **argv)
     SDL_RenderPresent(renderer);
     SDL_Delay(40);
   }
+
+}
+
+void game(char *map)
+{
+  
+  play(map);
+}
+
+int main(int argc, char **argv)
+{
+  if (argc != 2)
+    return -1;
+
+  srand(time(NULL));
+  init();
+  SDL_Window *screen = get_screen();
+  game(argv[1]);
   SDL_DestroyWindow(screen);
 
   SDL_Quit();

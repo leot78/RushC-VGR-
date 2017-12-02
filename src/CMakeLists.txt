@@ -8,6 +8,7 @@ set (SRC
   object.c
   player.c
   move.c
+  lock.c
   )
 
 add_library(game SHARED ${SRC})

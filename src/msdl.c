@@ -10,6 +10,7 @@
 #include "player.h"
 #include "object.h"
 #include "move.h"
+#include "lock.h"
 
 SDL_Window* get_screen(void)
 {
@@ -131,22 +132,25 @@ void move(const Uint8 *state, SDL_Renderer *renderer, struct map *map,
     struct player *player)
 {
   int moved = 0;
-  if(state[SDL_SCANCODE_RIGHT])
+  if (state[SDL_SCANCODE_RIGHT])
     moved = player_move_right(player, map);
 
-  else if(state[SDL_SCANCODE_LEFT])
+  else if (state[SDL_SCANCODE_LEFT])
     moved = player_move_left(player, map);
 
-  else if(state[SDL_SCANCODE_UP])
+  else if (state[SDL_SCANCODE_UP])
     moved = player_move_up(player, map);
 
-  else if(state[SDL_SCANCODE_DOWN])
+  else if (state[SDL_SCANCODE_DOWN])
     moved = player_move_down(player, map);
-
+  
+  else if (state[SDL_SCANCODE_RETURN])
+    near_lock(player, map);
+  
   SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);
   SDL_RenderFillRect(renderer, &player->rect);
   if (moved)
-    SDL_Delay(50);
+    SDL_Delay(40);
 }
 
 int main(int argc, char **argv)
@@ -186,7 +190,7 @@ int main(int argc, char **argv)
     }
     move(state, renderer, map, player);
     SDL_RenderPresent(renderer);
-    SDL_Delay(50);
+    SDL_Delay(40);
   }
   SDL_DestroyWindow(screen);
 

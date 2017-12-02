@@ -27,5 +27,7 @@ struct enemy **enemy_create_all(struct object *spawns[MAX_SPAWN],
                                 size_t number);
 void enemy_delete(struct enemy *e);
 void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer);
+void move_all_enemies(struct enemy **enemies, size_t number, struct map *map, 
+                      SDL_Renderer *renderer);
 
 #endif /* !ENEMY_H*/

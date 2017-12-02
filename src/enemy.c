@@ -7,6 +7,13 @@
 #include "player.h"
 #include "color.h"
 
+void move_all_enemies(struct enemy **enemies, size_t number, struct map *map, 
+                      SDL_Renderer *renderer)
+{
+  for (size_t i = 0; i < number; i++)
+    move_enemy(enemies[i], map, renderer);
+}
+
 struct enemy *enemy_create(int x, int y, int life)
 {
   struct player *p = player_create(x, y, life);
@@ -54,15 +61,16 @@ int try_move_enemy(enum move last, struct enemy *e, struct map *map)
 void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer)
 {
   int moved = try_move_enemy(e->last_move, e, map);
-  if (moved)
-    return;
-  enum move last_move;
-  while (!moved)
+  if (!moved)
   {
-    last_move = rand() % 4;
-    moved = try_move_enemy(last_move, e, map);
+    enum move last_move;
+    while (!moved)
+    {
+      last_move = rand() % 4;
+      moved = try_move_enemy(last_move, e, map);
+    }
+    e->last_move = last_move;
   }
-  e->last_move = last_move;
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
   SDL_RenderFillRect(renderer, &e->p->rect);
 }

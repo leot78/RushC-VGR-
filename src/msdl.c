@@ -120,6 +120,7 @@ int play(char *map_p)
   int quit = 0;
   SDL_Event e;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
+  struct enemy **enemies = enemy_create_all(map->spawns, 10);
   const Uint8 *state = SDL_GetKeyboardState(NULL);
   SDL_Rect txt_rect = init_rect(1000,200,200,100);
   
@@ -133,6 +134,7 @@ int play(char *map_p)
     }
     render_text("Life : 3", pick_color(BLUE), renderer, txt_rect);
     move(state, renderer, map, player);
+    move_all_enemies(enemies, 10, map, renderer);
     SDL_RenderPresent(renderer);
     SDL_Delay(60);
   }

@@ -12,6 +12,7 @@
 #include "move.h"
 #include "lock.h"
 #include "color.h"
+#include "enemy.h"
 
 SDL_Window* get_screen(void)
 {

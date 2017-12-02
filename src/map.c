@@ -45,7 +45,7 @@ struct map *parse_map(const char *pathname)
       int c = fgetc(file);
       if (c == '\n')
         c = fgetc(file);
-      objs[i][j] = object_create(c, 0, i, j);
+      objs[i][j] = object_create(c, i, j);
       if (c == 'S')
       {
         map->start_x = i;

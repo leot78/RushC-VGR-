@@ -15,16 +15,16 @@ void object_pc(struct object *obj)
   if ((r % RATIO_LOCK_PC) == 0)
   {
     obj->color = pick_color(RED);
-    obj->state = 0;
+    obj->state = LOCK;
   }
   else
   {
     obj->color = pick_color(BLUE);
-    obj->state = 1;
+    obj->state = ON;
   }
 }
 
-struct object *object_create(enum tile_type type, int state, int x, int y)
+struct object *object_create(enum tile_type type, int x, int y)
 {
   struct object *obj = malloc(sizeof(struct object));
 
@@ -34,14 +34,14 @@ struct object *object_create(enum tile_type type, int state, int x, int y)
   switch (type)
   {
     case  WALL:
-      obj->state = state;
+      obj->state = ON;
       obj->color = pick_color(GREY);
       break;
     case PC:
       object_pc(obj);
       break;
     default:
-      obj->state = state;
+      obj->state = ON;
       obj->color = pick_color(BLACK);
   }
 

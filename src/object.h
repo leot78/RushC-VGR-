@@ -7,6 +7,13 @@
 
 #define RATIO_LOCK_PC 4
 
+enum state
+{
+  ON,
+  LOCK,
+  BROKEN
+};
+
 enum tile_type
 {
   NONE = ' ',
@@ -18,12 +25,12 @@ enum tile_type
 struct object
 {
   enum tile_type type;
-  unsigned state;
+  enum state state;
   SDL_Rect rect;
   SDL_Color color;
 };
 
-struct object *object_create(enum tile_type type, int state, int x, int y);
+struct object *object_create(enum tile_type type, int x, int y);
 void obj_delete(struct object *obj);
 void print_obj(struct object *obj);
 

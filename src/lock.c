@@ -7,6 +7,8 @@
 #include "msdl.h"
 #include "color.h"
 
+char buff[127];
+
 struct object *near_lock(struct player *p, struct map *map)
 {
   if (p->y != 0 && map->objs[p->x][p->y - 1]->type == PC
@@ -28,8 +30,15 @@ struct object *near_lock(struct player *p, struct map *map)
 
 char *unlock_pc(struct object *pc)
 {
+  SDL_StartTextInput();
   char *mdp = generate_string(10, 97, 123);
   pc->state = ON;
   pc->color = pick_color(BLUE);
   return mdp;
+}
+
+int unlock_pc_checker()
+{
+  printf("%s\n", buff);
+  return 0;
 }

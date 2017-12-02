@@ -40,7 +40,7 @@ int try_move_enemy(enum move last, struct enemy *e, struct map *map)
   }
 }
 
-void move_enemy(struct enemy *e, struct map *map)
+void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer)
 {
   int moved = try_move_enemy(e->last_move, e, map);
   if (moved)
@@ -52,4 +52,6 @@ void move_enemy(struct enemy *e, struct map *map)
     moved = try_move_enemy(last_move, e, map);
   }
   e->last_move = last_move;
+  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+  SDL_RenderFillRect(renderer, &e->p->rect);
 }

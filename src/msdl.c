@@ -5,6 +5,7 @@
 
 #include "msdl.h"
 #include "map.h"
+#include "player.h"
 #include "object.h"
 
 SDL_Window* get_screen(void)
@@ -94,28 +95,29 @@ SDL_Color pick_color(enum colors c)
   return color;
 }
 
-void move(SDL_Renderer *renderer, SDL_Rect *r, SDL_Event e)
+void move(SDL_Event e, SDL_Renderer *renderer, struct map *map, 
+          struct player *p)
 {
   switch( e.key.keysym.sym )
   {
     case SDLK_UP:
-      r->y -= 16;
-      SDL_RenderFillRect( renderer, r );
+      player_move_up(p, map);
+      SDL_RenderFillRect( renderer, &p->rect);
       break;
 
     case SDLK_DOWN:
-      r->y += 16;
-      SDL_RenderFillRect( renderer, r );
+      player_move_down(p, map);
+      SDL_RenderFillRect( renderer, &p->rect);
       break;
 
     case SDLK_LEFT:
-      r->x -= 16;
-      SDL_RenderFillRect( renderer, r );
+      player_move_left(p, map);
+      SDL_RenderFillRect( renderer, &p->rect);
       break;
 
     case SDLK_RIGHT:
-      r->x += 16;
-      SDL_RenderFillRect( renderer, r );
+      player_move_right(p, map);
+      SDL_RenderFillRect( renderer, &p->rect);
       break;
 
     default:
@@ -134,7 +136,7 @@ int main(int argc, char **argv)
 {
   if (argc != 2)
     return -1;
-
+  
   struct map *map = parse_map(argv[1]);
   init();
 
@@ -153,7 +155,7 @@ int main(int argc, char **argv)
 
   //SDL_Rect Message_rect = init_rect(100, 0, 400, 100);
   SDL_Rect r =  init_rect(16, 16, 16, 16);
-
+  struct player *player =  player_create(1, 1, 1);
   SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
   SDL_RenderClear(renderer);
 
@@ -188,7 +190,7 @@ int main(int argc, char **argv)
             obj->color.b, 0);
         SDL_RenderFillRect( renderer, &obj->rect );
         SDL_SetRenderDrawColor( renderer, 255, 0, 255, 255 );
-        move(renderer, &r, e);
+        move(e, renderer, map, player);
         SDL_RenderPresent(renderer);
       }
     }

@@ -138,9 +138,9 @@ int main(int argc, char **argv)
   if (argc != 2)
     return -1;
   
+  srand(time(NULL));
   struct map *map = parse_map(argv[1]);
   init();
-  srand(time(NULL));
 
   TTF_Font *font = TTF_OpenFont(FONT, 172);
   if (!font)
@@ -187,6 +187,16 @@ int main(int argc, char **argv)
 
       else if( e.type == SDL_KEYDOWN && is_moving(e))
       {
+        for (size_t j = 0; j < map->height; ++j)
+        {
+          for (size_t i = 0; i < map->width; ++i)
+          {
+            struct object *obj = map->objs[i][j];
+            SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
+                obj->color.b, 0);
+            SDL_RenderFillRect( renderer, &obj->rect );
+          }
+        }
         struct object *obj = map->objs[player->x][player->y];
         SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
             obj->color.b, 0);

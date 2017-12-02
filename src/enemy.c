@@ -5,6 +5,7 @@
 #include "enemy.h"
 #include "move.h"
 #include "player.h"
+#include "color.h"
 
 struct enemy *enemy_create(int x, int y, int life)
 {

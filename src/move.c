@@ -5,10 +5,16 @@
 
 void player_move_up(struct player *p, struct map *map)
 {
-  if (p->y != 0 && map->objs[p->x][p->y - 1]->type == NONE)
+  if (p->y != 0) 
   {
-    --p->y;
-    p->rect = init_rect(p->x * 16, p->y * 16, 16, 16);
+    struct object *obj = map->objs[p->x][p->y - 1];
+    if (obj->type == NONE)
+    {
+      --p->y;
+      p->rect = init_rect(p->x * 16, p->y * 16, 16, 16);
+    }
+    else if (obj->type == PC && obj->state == 0)
+      obj->color = pick_color(BLUE);
   }
 }
 

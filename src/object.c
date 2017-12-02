@@ -21,12 +21,12 @@ struct object *object_create(enum tile_type type, int state, int x, int y)
 
   obj->type = type;
 
-  obj->rect = init_rect(16, 16, x * 16, y * 16);
+  obj->rect = init_rect(x * 16, y * 16, 16, 16);
   switch (type)
   {
     case NONE:
       obj->state = state;
-      obj->color = pick_color(WHITE);
+      obj->color = pick_color(BLACK);
       break;
     case  WALL:
       obj->state = state;

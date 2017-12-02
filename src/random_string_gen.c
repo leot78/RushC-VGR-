@@ -8,12 +8,6 @@
 */
 char *generate_string(size_t len, int min, int max)
 {
-  static int seeded = 0;
-  if (!seeded)
-  {
-    srand(time(NULL));
-    seeded = 1;
-  }
   int offset = max - min;
   char *res = malloc(sizeof(char) * len);
   for (size_t i = 0; i < len; i++)

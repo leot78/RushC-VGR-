@@ -2,6 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <err.h>
+#include <time.h>
 
 #include "msdl.h"
 #include "map.h"
@@ -139,6 +140,7 @@ int main(int argc, char **argv)
   
   struct map *map = parse_map(argv[1]);
   init();
+  srand(time(NULL));
 
   TTF_Font *font = TTF_OpenFont(FONT, 172);
   if (!font)
@@ -185,7 +187,7 @@ int main(int argc, char **argv)
 
       else if( e.type == SDL_KEYDOWN && is_moving(e))
       {
-        struct object *obj = map->objs[r.x/16][r.y/16];
+        struct object *obj = map->objs[player->x][player->y];
         SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
             obj->color.b, 0);
         SDL_RenderFillRect( renderer, &obj->rect );
@@ -193,7 +195,9 @@ int main(int argc, char **argv)
         move(e, renderer, map, player);
         SDL_RenderPresent(renderer);
       }
+      SDL_Delay(20);
     }
+    SDL_Delay(20);
   }
   SDL_DestroyWindow(screen);
 

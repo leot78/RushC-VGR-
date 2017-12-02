@@ -6,6 +6,8 @@
 #include "map.h"
 #include "object.h"
 
+#define SIZE 32
+
 void object_pc(struct object *obj)
 {
   int r = rand();
@@ -27,7 +29,7 @@ struct object *object_create(enum tile_type type, int state, int x, int y)
 
   obj->type = type;
 
-  obj->rect = init_rect(x * 32, y * 32, 32, 32);
+  obj->rect = init_rect(x * SIZE, y * SIZE, SIZE, SIZE);
   switch (type)
   {
     case  WALL:

@@ -3,6 +3,7 @@
 
 #include "msdl.h"
 #include "player.h"
+#include "color.h"
 
 #define SIZE 32
 

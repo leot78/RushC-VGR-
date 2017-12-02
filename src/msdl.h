@@ -10,17 +10,6 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 960
 
-enum colors
-{
-  BLACK,
-  RED,
-  WHITE,
-  GREEN,
-  BLUE,
-  GREY
-};
-
-SDL_Color pick_color(enum colors c);
 SDL_Rect init_rect(int x, int y, int w, int h);
 
 #endif /* !MSDL_H */

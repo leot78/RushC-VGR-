@@ -2,6 +2,7 @@
 #include "object.h"
 #include "player.h"
 #include "msdl.h"
+#include "color.h"
 
 int near_lock(struct player *p, struct map *map)
 {

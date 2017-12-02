@@ -7,8 +7,8 @@
 
 struct player
 {
-  int x;
-  int y;
+  size_t x;
+  size_t  y;
   size_t life;
   SDL_Rect rect;
   SDL_Color color;

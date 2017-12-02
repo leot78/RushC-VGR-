@@ -8,10 +8,17 @@
 
 void object_pc(struct object *obj)
 {
-  srand(time(NULL));
   int r = rand();
-
-  obj->state = (r % RATIO_LOCK_PC == 0);
+  if ((r % RATIO_LOCK_PC) == 0)
+  {
+    obj->color = pick_color(RED);
+    obj->state = 0;
+  }
+  else
+  {
+    obj->color = pick_color(BLUE);
+    obj->state = 1;
+  }
 }
 
 struct object *object_create(enum tile_type type, int state, int x, int y)
@@ -33,7 +40,6 @@ struct object *object_create(enum tile_type type, int state, int x, int y)
       break;
     case PC:
       object_pc(obj);
-      obj->color = pick_color(BLUE);
       break;
     default:
       obj->state = 0;
@@ -47,13 +53,11 @@ void obj_delete(struct object *obj)
   free(obj);
 }
 
-
-
 void print_obj(struct object *obj)
 {
   if (obj->type == PC)
   {
-    if (obj->state == 0)
+    if (obj->state == 1)
       printf("P");
     else
       printf("X");

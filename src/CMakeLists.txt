@@ -1,12 +1,13 @@
+cmake_minimum_required(VERSION 3.10)
 project("UnLock Legacy" C)
-    if(COMMAND cmake_policy)
-      cmake_policy(SET CMP0003 NEW)
-    endif(COMMAND cmake_policy)
-    cmake_minimum_required(VERSION 3.10)
+
+set(CMAKE_C_FLAGS "-Wall -Wextra -Werror -std=c99 -pedantic")
 
 set (SRC
   map.c
   object.c
+  player.c
+  move.c
   )
 
 add_library(game SHARED ${SRC})

@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "map.h"
+
 struct player
 {
   int x;

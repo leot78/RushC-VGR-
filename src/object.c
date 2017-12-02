@@ -27,7 +27,7 @@ struct object *object_create(enum tile_type type, int state, int x, int y)
 
   obj->type = type;
 
-  obj->rect = init_rect(x * 16, y * 16, 16, 16);
+  obj->rect = init_rect(x * 32, y * 32, 32, 32);
   switch (type)
   {
     case  WALL:

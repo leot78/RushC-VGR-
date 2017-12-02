@@ -1,5 +1,5 @@
-#ifndef PLAYER_H
-# define PLAYER_H
+#ifndef ENEMY_H
+# define ENEMY_H
 
 #include <SDL2/SDL.h>
 
@@ -12,13 +12,17 @@ enum move
   DOWN,
   LEFT,
   RIGHT,
-  NONE
+  NO
 };
 
 struct enemy
 {
   enum move last_move;
-  struct player *player;
+  struct player *p;
 };
 
-#endif /* !PLAYER_H*/
+struct enemy *enemy_create(int x, int y, int life);
+void enemy_delete(struct enemy *e);
+void move_enemy(struct enemy *e, struct map *map);
+
+#endif /* !ENEMY_H*/

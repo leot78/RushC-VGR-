@@ -215,6 +215,7 @@ int play(char *map_p, int menu)
         move(e, renderer, map, player);
     }
     render_map(map, renderer);
+    collision(enemies, nbe, map, renderer);
     move_all_enemies(enemies, nbe, map, renderer);
     collision(enemies, player, nbe);
     print_sprite(PLAYER, player->rect, renderer);

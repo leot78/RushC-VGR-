@@ -22,5 +22,6 @@ struct map
 struct map *map_init(size_t width, size_t height);
 struct map *parse_map(const char *pathname);
 void print_map(struct map *map);
+int check_unlock(struct map *map);
 
 #endif /* !MAP_H */

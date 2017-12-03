@@ -73,3 +73,17 @@ void print_map(struct map *map)
     putchar('\n');
   }
 }
+
+
+int check_unlock(struct map *map)
+{
+  for (size_t j = 0; j < map->height; ++j)
+  {
+    for (size_t i = 0; i < map->width; ++i)
+    {
+      if (map->objs[i][j]->type == PC && map->objs[i][j]->state == LOCK)
+        return 0;
+    }
+  }
+  return 1;
+}

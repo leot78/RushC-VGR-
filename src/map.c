@@ -87,3 +87,19 @@ int check_unlock(struct map *map)
   }
   return 1;
 }
+
+void free_map(struct map *map)
+{
+  for (size_t j = 0; j < map->height; ++j)
+  {
+    for (size_t i = 0; i < map->width; ++i)
+      free(map->objs[i][j]);
+  }
+  
+  for (size_t x = 0; x < map->width; ++x)
+    free(map->objs[x]);
+
+  free(map->objs);
+
+  free(map);
+}

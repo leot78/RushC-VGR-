@@ -252,6 +252,7 @@ int play(char *map_p, int menu)
     SDL_Delay(40);
   }
   free(player);
+  free_map(map);
   return quit;
 }
 

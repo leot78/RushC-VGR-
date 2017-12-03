@@ -117,7 +117,7 @@ int title(void)
         quit = 127;
     }
     render_text("(Un)Lock Legacy", pick_color(BLUE), renderer, txt_rect);
-    render_text("Start", pick_color(BLACK), renderer, start_rect);
+    render_text("Start", pick_color(BLACK), renderer, start_rect);;
     render_text("Exit", pick_color(BLACK), renderer, exit_rect);
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
@@ -135,7 +135,7 @@ int play(char *map_p)
   SDL_Event e;
   int quit = 0;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
-  struct enemy **enemies = enemy_create_all(map->spawns, 10);
+  struct enemy **enemies = enemy_create_all(map->spawns, 10, 2);
   SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
   g_mdp = NULL;
 

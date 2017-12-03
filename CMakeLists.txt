@@ -15,6 +15,7 @@ set (SRC
   src/text.c
   src/sprite.c
   src/timer.c
+  src/enemy_delete_all.c
   )
 
 set (TSRC

@@ -27,6 +27,17 @@ SDL_Window* get_screen(void)
   return screen;
 }
 
+SDL_Renderer *get_renderer(void)
+{
+  static SDL_Renderer *renderer = NULL;
+  if (!renderer)
+    renderer = SDL_CreateRenderer(get_screen(), -1, 
+      SDL_RENDERER_ACCELERATED);
+  return renderer;
+}
+
+
+
 void init(void)
 {
   if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -86,9 +97,8 @@ int in_rect(SDL_Rect rec)
 
 int title(void)
 {
-  SDL_Window *screen = get_screen();
-  SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
-      SDL_RENDERER_ACCELERATED);
+  SDL_Renderer* renderer = get_renderer();
+  SDL_RenderClear(renderer);
   int quit = 0;
   SDL_Event e;
   SDL_Rect txt_rect = init_rect(430,100,400,100);
@@ -97,7 +107,7 @@ int title(void)
 
   while (!quit)
   {
-    if (SDL_PollEvent(&e) != 0)
+    while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(start_rect))
       {
@@ -117,16 +127,17 @@ int title(void)
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
   }
-  SDL_DestroyRenderer(renderer);
   return quit;
 }
+
+
 int play(char *map_p)
 {
 
   struct map *map = parse_map(map_p);
-  SDL_Window *screen = get_screen();
-  SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
-      SDL_RENDERER_ACCELERATED);
+  SDL_Renderer* renderer = get_renderer();
+  SDL_RenderClear(renderer);
+
   SDL_Event e;
   int quit = 0;
   int nbe = 20;
@@ -156,16 +167,14 @@ int play(char *map_p)
     SDL_RenderPresent(renderer);
     SDL_Delay(40);
   }
-  SDL_DestroyRenderer(renderer);
   free(player);
   return 0;
 }
 
 int level_choice(void)
 {
-  SDL_Window *screen = get_screen();
-  SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
-      SDL_RENDERER_ACCELERATED);
+  SDL_Renderer* renderer = get_renderer();
+  SDL_RenderClear(renderer);
   int quit = 0;
   SDL_Event e;
   SDL_Rect sr_rect = init_rect(430,100,400,100);
@@ -175,7 +184,7 @@ int level_choice(void)
 
   while (!quit)
   {
-    if (SDL_PollEvent(&e) != 0)
+    while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(sr_rect))
         quit = 2;
@@ -195,7 +204,6 @@ int level_choice(void)
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
   }
-  SDL_DestroyRenderer(renderer);
   return quit;
 }
 

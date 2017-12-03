@@ -97,11 +97,12 @@ int in_rect(SDL_Rect rec)
 void interface(struct player *player, SDL_Renderer *renderer,
                SDL_Rect r1, SDL_Rect r2, SDL_Rect r3)
 {
-  char *score = "Score : 0";
+  char score[15];
+  sprintf(score, "Score: %ld",player->score);
   char life[8];
   sprintf(life, "Life: %d",player->life);
   char time[10];
-  sprintf(time, "Time: %d",get_time());
+  sprintf(time, "Time: %ld",get_time());
   render_text(score, pick_color(BLACK), renderer, r1);
   render_text(life, pick_color(BLACK), renderer, r2);
   render_text(time, pick_color(BLACK), renderer, r3);
@@ -216,8 +217,8 @@ int play(char *map_p, int menu)
   SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
 
   SDL_Rect int1_rect = init_rect(10, 850, 100, 25);
-  SDL_Rect int2_rect = init_rect(10, 900, 100, 25);
-  SDL_Rect int3_rect = init_rect(10, 950, 100, 25);
+  SDL_Rect int2_rect = init_rect(10, 870, 100, 25);
+  SDL_Rect int3_rect = init_rect(10, 890, 100, 25);
   g_mdp = NULL;
 
   while (quit == -1)
@@ -243,7 +244,7 @@ int play(char *map_p, int menu)
 
     interface(player, renderer, int1_rect, int2_rect, int3_rect);
     SDL_RenderPresent(renderer);
-    if (player->life <= 0)
+    if (player->life <= 0 || get_time() == 0)
       quit = menu + 10;
 
     if (check_unlock(map))

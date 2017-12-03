@@ -16,6 +16,7 @@ struct player *player_create(int x, int y, int life)
   p->life = life;
   p->rect = init_rect(x * SIZE, y* SIZE, SIZE, SIZE);
   p->color = pick_color(RED);
+  p->score = 0;
   return p;
 }
 

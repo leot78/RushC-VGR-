@@ -68,12 +68,13 @@ void move(SDL_Event e, SDL_Renderer *renderer, struct map *map,
       strcat(g_mdp->input, e.text.text);
     else if (e.key.keysym.sym == SDLK_RETURN)
     {
-      //check mdp
       if (!strcmp(g_mdp->mdp, g_mdp->input))
+      {
         unlock_pc(pc_lock);
+        player->score += 100;
+      }
       else
         player->life -= 1;
-        //printf("FAIL : mdp:%s input:%s\n", g_mdp->mdp, g_mdp->input);
       free(g_mdp->mdp);
       free(g_mdp);
       g_mdp = NULL;

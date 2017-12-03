@@ -13,6 +13,7 @@ struct player
   int life;
   SDL_Rect rect;
   SDL_Color color;
+  size_t score;
 };
 
 struct player *player_create(int x, int y, int life);

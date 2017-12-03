@@ -79,6 +79,12 @@ void move(SDL_Event e, SDL_Renderer *renderer, struct map *map,
       free(g_mdp);
       g_mdp = NULL;
     }
+    else if (e.key.keysym.sym == SDLK_BACKSPACE)
+    {
+      free(g_mdp->mdp);
+      free(g_mdp);
+      g_mdp = NULL;
+    }
   }
   else
   {  

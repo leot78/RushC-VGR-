@@ -119,30 +119,35 @@ int win(void)
   return 0;
 }
 
-int die(void)
+int die(int menu)
 {
   SDL_Renderer* renderer = get_renderer();
   SDL_RenderClear(renderer);
-  int quit = 0;
+  int quit = -1;
   SDL_Event e;
   SDL_Rect txt_rect = init_rect(430,100,400,100);
   SDL_Rect txt2_rect = init_rect(430, 500, 400, 100);
+  SDL_Rect txt3_rect = init_rect(430, 700, 400, 100);
 
-  while (!quit)
+  while (quit == -1)
   {
     while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_QUIT || (e.key.type == SDL_KEYDOWN 
-          && e.key.keysym.sym == SDLK_RETURN))
-        quit = 127;
+          && e.key.keysym.sym == SDLK_ESCAPE))
+        quit = 0;
+      if (e.key.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN)
+        quit = menu - 10;
     }
     render_text("You've been confloosed", pick_color(RED), renderer, txt_rect);
     render_text("Press enter to replay", pick_color(BLACK), renderer, 
                 txt2_rect);
+    render_text("Press escape for menu", pick_color(BLACK), renderer, 
+                txt3_rect);
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
   }
-  return 0;
+  return quit;
 }
 
 int title(void)
@@ -181,7 +186,7 @@ int title(void)
 }
 
 
-int play(char *map_p)
+int play(char *map_p, int menu)
 {
 
   struct map *map = parse_map(map_p);
@@ -190,7 +195,7 @@ int play(char *map_p)
 
   SDL_Event e;
   int quit = -1;
-  int nbe = 1;
+  int nbe = 10;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
   struct enemy **enemies = enemy_create_all(map->spawns, nbe, 2);
   SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
@@ -217,10 +222,10 @@ int play(char *map_p)
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
     SDL_RenderPresent(renderer);
     if (player->life <= 0)
-      quit = 6;
+      quit = menu + 10;
 
     if (check_unlock(map))
-      quit = 7;
+      quit = 6;
     SDL_Delay(40);
   }
   free(player);
@@ -273,17 +278,17 @@ void game(void)
     else if (menu == 1)
       menu = level_choice();
     else if (menu == 2)
-      menu = play("../../maps/LabSR_SM14.map");
+      menu = play("../../maps/LabSR_SM14.map", menu);
     else if (menu == 3)
-      menu = play("../../maps/pasteur.map");
+      menu = play("../../maps/pasteur.map", menu);
     else if (menu == 4)
-      menu = play("../../maps/VJ.map");
+      menu = play("../../maps/VJ.map", menu);
     else if (menu == 5)
-      menu = play("../../maps/midlab.map");
+      menu = play("../../maps/midlab.map", menu);
     else if (menu == 6)
-      menu = die();
-    else if (menu == 7)
       menu = win();
+    else 
+      menu = die(menu);
   }
 }
 

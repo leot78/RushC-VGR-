@@ -254,6 +254,7 @@ int play(char *map_p, int menu)
       quit = 6;
     SDL_Delay(40);
   }
+  enemy_delete_all(enemies, nbe);
   free(player);
   free_map(map);
   return quit;

@@ -95,6 +95,32 @@ int in_rect(SDL_Rect rec)
   return x > rx && x < rx + rw && y > ry && y < ry + rh;
 }
 
+int die(void)
+{
+  SDL_Renderer* renderer = get_renderer();
+  SDL_RenderClear(renderer);
+  int quit = 0;
+  SDL_Event e;
+  SDL_Rect txt_rect = init_rect(430,100,400,100);
+  SDL_Rect txt2_rect = init_rect(430, 500, 400, 100);
+
+  while (!quit)
+  {
+    while (SDL_PollEvent(&e) != 0)
+    {
+      if (e.type == SDL_QUIT || (e.key.type == SDL_KEYDOWN 
+          && e.key.keysym.sym == SDLK_RETURN))
+        quit = 127;
+    }
+    render_text("You've been confloosed", pick_color(RED), renderer, txt_rect);
+    render_text("Press enter to replay", pick_color(BLACK), renderer, 
+                txt2_rect);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(10);
+  }
+  return 0;
+}
+
 int title(void)
 {
   SDL_Renderer* renderer = get_renderer();
@@ -180,7 +206,7 @@ int level_choice(void)
   SDL_Rect sr_rect = init_rect(430,100,400,100);
   SDL_Rect past_rect = init_rect(430, 300, 400, 100);
   SDL_Rect vj_rect = init_rect(430, 500, 400, 100);
-  SDL_Rect mid_rect = init_rect(430, 800, 400, 100);
+  SDL_Rect mid_rect = init_rect(430, 700, 400, 100);
 
   while (!quit)
   {
@@ -197,7 +223,7 @@ int level_choice(void)
       if (e.key.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
         quit = 127;
     }
-    render_text("LabSR_SM14", pick_color(BLUE), renderer, sr_rect);
+    render_text("LabSR_SM14", pick_color(BLACK), renderer, sr_rect);
     render_text("Pasteur", pick_color(BLACK), renderer, past_rect);;
     render_text("Villejuif", pick_color(BLACK), renderer, vj_rect);
     render_text("MidLab", pick_color(BLACK), renderer, mid_rect);
@@ -224,6 +250,8 @@ void game(void)
       menu = play("../../maps/VJ.map");
     else if (menu == 5)
       menu = play("../../maps/midlab.map");
+    else if (menu == 6)
+      menu = die();
   }
 }
 

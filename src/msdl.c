@@ -95,6 +95,32 @@ int in_rect(SDL_Rect rec)
   return x > rx && x < rx + rw && y > ry && y < ry + rh;
 }
 
+int win(void)
+{
+  SDL_Renderer* renderer = get_renderer();
+  SDL_RenderClear(renderer);
+  int quit = 0;
+  SDL_Event e;
+  SDL_Rect txt_rect = init_rect(430,100,400,100);
+  SDL_Rect txt2_rect = init_rect(430, 500, 400, 100);
+
+  while (!quit)
+  {
+    while (SDL_PollEvent(&e) != 0)
+    {
+      if (e.type == SDL_QUIT || (e.key.type == SDL_KEYDOWN 
+          && e.key.keysym.sym == SDLK_RETURN))
+        quit = 127;
+    }
+    render_text("You won against the ACU's !", pick_color(RED), renderer, txt_rect);
+    render_text("Press enter to replay", pick_color(BLACK), renderer, 
+                txt2_rect);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(10);
+  }
+  return 0;
+}
+
 int die(void)
 {
   SDL_Renderer* renderer = get_renderer();
@@ -165,14 +191,14 @@ int play(char *map_p)
   SDL_RenderClear(renderer);
 
   SDL_Event e;
-  int quit = 0;
+  int quit = -1;
   int nbe = 20;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
   struct enemy **enemies = enemy_create_all(map->spawns, nbe, 2);
   SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
   g_mdp = NULL;
 
-  while (!quit)
+  while (quit == -1)
   {
     while (SDL_PollEvent(&e) != 0)
     {
@@ -180,7 +206,7 @@ int play(char *map_p)
       {
         move(e, renderer, map, player);
         if (e.key.keysym.sym == SDLK_ESCAPE)
-          quit = 127;
+          quit = 0;
       }
       else if (e.type == SDL_TEXTINPUT)
         move(e, renderer, map, player);
@@ -191,10 +217,12 @@ int play(char *map_p)
     if (g_mdp)
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
     SDL_RenderPresent(renderer);
+    if (player->life <= 0)
+      quit = 6;
     SDL_Delay(40);
   }
   free(player);
-  return 0;
+  return quit;
 }
 
 int level_choice(void)
@@ -251,6 +279,8 @@ void game(void)
     else if (menu == 5)
       menu = play("../../maps/midlab.map");
     else if (menu == 6)
+      menu = die();
+    else if (menu == 7)
       menu = die();
   }
 }

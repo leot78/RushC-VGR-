@@ -72,7 +72,5 @@ void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer)
     }
     e->last_move = last_move;
   }
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-  SDL_RenderFillRect(renderer, &e->p->rect);
   print_sprite(ACU, e->p->rect, renderer);
 }

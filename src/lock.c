@@ -40,8 +40,7 @@ char *start_unlock(int size)
 
 void unlock_pc(struct object *obj)
 {
-  obj->type = ON;
-  obj->color = pick_color(BLUE);
+  obj->state = ON;
 }
 
 int unlock_pc_checker(char *s, char *mdp, int size_mdp)

@@ -153,9 +153,8 @@ int play(char *map_p)
         move(e, renderer, map, player);
     }
     render_map(map, renderer);
-    SDL_SetRenderDrawColor(renderer,127,57,255,255);
-    SDL_RenderFillRect(renderer, &player->rect);
     move_all_enemies(enemies, 10, map, renderer);
+    print_sprite(PLAYER, player->rect, renderer);
     if (g_mdp)
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
 

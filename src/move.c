@@ -3,6 +3,7 @@
 #include "object.h"
 #include "player.h"
 #include "move.h"
+#include "sprite.h"
 #include "lock.h"
 #include "color.h"
 #include "text.h"
@@ -59,9 +60,8 @@ void move(SDL_Event e, SDL_Renderer *renderer, struct map *map,
     struct player *player)
 {
   int size_mdp = 3;
-  int moved = 0;
   static struct object *pc_lock = NULL;
-
+  renderer = renderer;
   if(g_mdp)
   {
     if (e.type == SDL_TEXTINPUT)
@@ -81,16 +81,16 @@ void move(SDL_Event e, SDL_Renderer *renderer, struct map *map,
   else
   {  
     if (e.key.keysym.sym == SDLK_RIGHT)
-      moved = player_move_right(player, map);
+      player_move_right(player, map);
 
     if (e.key.keysym.sym == SDLK_LEFT)
-      moved = player_move_left(player, map);
+      player_move_left(player, map);
 
     if (e.key.keysym.sym == SDLK_UP)
-      moved = player_move_up(player, map);
+      player_move_up(player, map);
 
     if (e.key.keysym.sym == SDLK_DOWN)
-      moved = player_move_down(player, map);
+      player_move_down(player, map);
 
     if (e.key.keysym.sym == SDLK_RETURN)
     {
@@ -99,7 +99,4 @@ void move(SDL_Event e, SDL_Renderer *renderer, struct map *map,
         start_unlock(size_mdp);
     }
   }
-  moved = moved;
-  SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);
-  SDL_RenderFillRect(renderer, &player->rect);
 }

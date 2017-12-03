@@ -124,7 +124,8 @@ int play(char *map_p)
   int quit = 0;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
   struct enemy **enemies = enemy_create_all(map->spawns, 10);
-  
+  SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
+  g_mdp = NULL;
   while (!quit)
   {
     while (SDL_PollEvent(&e) != 0)
@@ -135,11 +136,15 @@ int play(char *map_p)
         if (e.key.keysym.sym == SDLK_ESCAPE)
           quit = 127;
       }
+      else if (e.type == SDL_TEXTINPUT)
+        move(e, renderer, map, player);
     }
     render_map(map, renderer);
     SDL_SetRenderDrawColor(renderer,127,57,255,255);
     SDL_RenderFillRect(renderer, &player->rect);
     move_all_enemies(enemies, 10, map, renderer);
+    if (g_mdp)
+      render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
     SDL_RenderPresent(renderer);
     SDL_Delay(60);
   }

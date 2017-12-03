@@ -58,30 +58,46 @@ int player_move_left(struct player *p, struct map *map)
 void move(SDL_Event e, SDL_Renderer *renderer, struct map *map, 
     struct player *player)
 {
+  int size_mdp = 3;
   int moved = 0;
-  static char *mdp = NULL;
-  SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
-  
-  if(mdp)
-    render_text(mdp, pick_color(WHITE), renderer, rect_mdp);
-  
-  if (e.key.keysym.sym == SDLK_RIGHT)
-    moved = player_move_right(player, map);
+  static struct object *pc_lock = NULL;
 
-  if (e.key.keysym.sym == SDLK_LEFT)
-    moved = player_move_left(player, map);
-
-  if (e.key.keysym.sym == SDLK_UP)
-    moved = player_move_up(player, map);
-
-  if (e.key.keysym.sym == SDLK_DOWN)
-    moved = player_move_down(player, map);
-
-  if (e.key.keysym.sym == SDLK_RETURN)
+  if(g_mdp)
   {
-    struct object *obj = near_lock(player, map);
-    if (obj)
-      mdp = unlock_pc(obj);
+    if (e.type == SDL_TEXTINPUT)
+      strcat(g_mdp->input, e.text.text);
+    else if (e.key.keysym.sym == SDLK_RETURN)
+    {
+      //check mdp
+      if (!strcmp(g_mdp->mdp, g_mdp->input))
+        unlock_pc(pc_lock);
+      else
+        printf("FAIL : mdp:%s input:%s\n", g_mdp->mdp, g_mdp->input);
+      free(g_mdp->mdp);
+      free(g_mdp);
+      g_mdp = NULL;
+    }
+  }
+  else
+  {  
+    if (e.key.keysym.sym == SDLK_RIGHT)
+      moved = player_move_right(player, map);
+
+    if (e.key.keysym.sym == SDLK_LEFT)
+      moved = player_move_left(player, map);
+
+    if (e.key.keysym.sym == SDLK_UP)
+      moved = player_move_up(player, map);
+
+    if (e.key.keysym.sym == SDLK_DOWN)
+      moved = player_move_down(player, map);
+
+    if (e.key.keysym.sym == SDLK_RETURN)
+    {
+      pc_lock = near_lock(player, map);
+      if (pc_lock)
+        start_unlock(size_mdp);
+    }
   }
   moved = moved;
   SDL_SetRenderDrawColor(renderer, 127, 57,  255, 255);

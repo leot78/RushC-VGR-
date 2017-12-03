@@ -7,7 +7,7 @@
 #include "msdl.h"
 #include "color.h"
 
-char buff[127];
+struct mdp *g_mdp;
 
 struct object *near_lock(struct player *p, struct map *map)
 {
@@ -28,17 +28,39 @@ struct object *near_lock(struct player *p, struct map *map)
 }
 
 
-char *unlock_pc(struct object *pc)
+char *start_unlock(int size)
 {
+  g_mdp = malloc(sizeof(struct mdp));
+  g_mdp->input[0] = '\0';
+
   SDL_StartTextInput();
-  char *mdp = generate_string(10, 97, 123);
-  pc->state = ON;
-  pc->color = pick_color(BLUE);
-  return mdp;
+  g_mdp->mdp = generate_string(size, 97, 123);
+  return g_mdp->mdp;
 }
 
-int unlock_pc_checker()
+void unlock_pc(struct object *obj)
 {
-  printf("%s\n", buff);
-  return 0;
+  obj->type = ON;
+  obj->color = pick_color(BLUE);
+}
+
+int unlock_pc_checker(char *s, char *mdp, int size_mdp)
+{
+  static int index = 0;
+  if (s[0] == mdp[index])
+  {
+    index++;
+    if (index == size_mdp)
+    {
+      index = 0;
+      return 2;
+    }
+    return 1;
+  }
+  else
+  {
+    SDL_StopTextInput();
+    index = 0;
+    return 0;
+  }
 }

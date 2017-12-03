@@ -1,0 +1,27 @@
+                                 UNLOCK LEGACY
+
+                                How to install
+
+mkdir build
+cd build
+cmake ..
+make
+
+To launch: ./UnLock_Legacy
+
+                                GAME DESCRIPTION
+
+You are a student at EPITA, and knowing every password of your friends that
+are locked for more than one hour, you have to save them from Confloose by 
+typing their password.
+
+You can choose a machines room at the start of the game.
+Go toward locked computer (in red), press enter to start typing.
+When pressing enter, the password will be displayed.
+Type it and press enter, beware that if you type the wrong password, you will
+lose 1 HP.
+You can press backspace to cancel an input.
+To move use arrow key.
+You have 3 hp.
+
+You need to dodge the ACUs, if an ACU catch you, you LOOSE!

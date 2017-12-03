@@ -9,6 +9,7 @@
 #define SCREEN_HEIGHT 960
 #define MAX_SPAWN 5
 
+
 SDL_Rect init_rect(int x, int y, int w, int h);
 
 #endif /* !MSDL_H */

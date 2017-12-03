@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <err.h>
 #include <time.h>
@@ -14,16 +15,20 @@
 #include "text.h"
 #include "color.h"
 #include "enemy.h"
+#include "sprite.h"
 
 SDL_Window* get_screen(void)
 {
   static SDL_Window* screen = NULL;
   if (!screen)
     screen = SDL_CreateWindow("(Un)Lock Legacy", SDL_WINDOWPOS_UNDEFINED, 
-                              SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, 
-                              SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+        SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, 
+        SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
   return screen;
 }
+
+
+
 
 void init(void)
 {
@@ -60,6 +65,14 @@ void render_map(struct map *map, SDL_Renderer *renderer)
       SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
           obj->color.b, 0);
       SDL_RenderFillRect( renderer, &obj->rect );
+      if (obj->type == NONE)
+        print_sprite(GROUND, obj->rect, renderer);
+
+      if (obj->type == PC && obj->state == ON)
+        print_sprite(PCULOCK, obj->rect, renderer);
+      if (obj->type == PC && obj->state == LOCK)
+        print_sprite(PCLOCK, obj->rect, renderer);
+
     }
   }
 }
@@ -80,13 +93,13 @@ int title(void)
 {
   SDL_Window *screen = get_screen();
   SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
-                                              SDL_RENDERER_ACCELERATED);
+      SDL_RENDERER_ACCELERATED);
   int quit = 0;
   SDL_Event e;
   SDL_Rect txt_rect = init_rect(430,100,400,100);
   SDL_Rect start_rect = init_rect(430, 300, 400, 100);
   SDL_Rect exit_rect = init_rect(430, 500, 400, 100);
-  
+
   while (!quit)
   {
     if (SDL_PollEvent(&e) != 0)
@@ -107,25 +120,25 @@ int title(void)
     render_text("Start", pick_color(BLACK), renderer, start_rect);
     render_text("Exit", pick_color(BLACK), renderer, exit_rect);
     SDL_RenderPresent(renderer);
-    SDL_Delay(1);
+    SDL_Delay(10);
   }
   SDL_DestroyRenderer(renderer);
   return quit;
 }
-
 int play(char *map_p)
 {
 
   struct map *map = parse_map(map_p);
   SDL_Window *screen = get_screen();
   SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
-                                              SDL_RENDERER_ACCELERATED);
+      SDL_RENDERER_ACCELERATED);
   SDL_Event e;
   int quit = 0;
   struct player *player =  player_create(map->start_x, map->start_y, 1);
   struct enemy **enemies = enemy_create_all(map->spawns, 10);
   SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
   g_mdp = NULL;
+
   while (!quit)
   {
     while (SDL_PollEvent(&e) != 0)
@@ -145,6 +158,8 @@ int play(char *map_p)
     move_all_enemies(enemies, 10, map, renderer);
     if (g_mdp)
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
+
+
     SDL_RenderPresent(renderer);
     SDL_Delay(60);
   }
@@ -157,14 +172,14 @@ int level_choice(void)
 {
   SDL_Window *screen = get_screen();
   SDL_Renderer* renderer = SDL_CreateRenderer(screen, -1, 
-                                              SDL_RENDERER_ACCELERATED);
+      SDL_RENDERER_ACCELERATED);
   int quit = 0;
   SDL_Event e;
   SDL_Rect sr_rect = init_rect(430,100,400,100);
   SDL_Rect past_rect = init_rect(430, 300, 400, 100);
   SDL_Rect vj_rect = init_rect(430, 500, 400, 100);
   SDL_Rect mid_rect = init_rect(430, 800, 400, 100);
-  
+
   while (!quit)
   {
     if (SDL_PollEvent(&e) != 0)
@@ -185,7 +200,7 @@ int level_choice(void)
     render_text("Villejuif", pick_color(BLACK), renderer, vj_rect);
     render_text("MidLab", pick_color(BLACK), renderer, mid_rect);
     SDL_RenderPresent(renderer);
-    SDL_Delay(1);
+    SDL_Delay(10);
   }
   SDL_DestroyRenderer(renderer);
   return quit;

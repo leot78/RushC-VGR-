@@ -13,6 +13,7 @@ set (SRC
   color.c
   random_string_gen.c
   text.c
+  sprite.c
   )
 
 add_library(game SHARED ${SRC})
@@ -21,4 +22,4 @@ set (TSRC
   msdl.c)
 
 add_executable(tests EXCLUDE_FROM_ALL ${TSRC})
-target_link_libraries(tests game SDL2 SDL2_ttf SDL2_mixer) 
+target_link_libraries(tests game SDL2 SDL2_ttf SDL2_mixer SDL2_image) 

@@ -6,6 +6,7 @@
 #include "move.h"
 #include "player.h"
 #include "color.h"
+#include "sprite.h"
 
 void move_all_enemies(struct enemy **enemies, size_t number, struct map *map, 
                       SDL_Renderer *renderer)
@@ -73,4 +74,5 @@ void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer)
   }
   SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
   SDL_RenderFillRect(renderer, &e->p->rect);
+  print_sprite(ACU, e->p->rect, renderer);
 }

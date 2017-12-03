@@ -72,7 +72,7 @@ void render_map(struct map *map, SDL_Renderer *renderer)
       SDL_SetRenderDrawColor(renderer, obj->color.r, obj->color.g, 
           obj->color.b, 0);
       SDL_RenderFillRect( renderer, &obj->rect );
-      if (obj->type == NONE)
+      if (obj->type == NONE || obj->type == SPAWN || obj->type == START)
         print_sprite(GROUND, obj->rect, renderer);
 
       if (obj->type == PC && obj->state == ON)

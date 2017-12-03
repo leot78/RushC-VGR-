@@ -17,6 +17,7 @@ struct map
   size_t start_x;
   size_t start_y;
   struct object *spawns[MAX_SPAWN];
+  size_t nb_enemy;
 };
 
 struct map *map_init(size_t width, size_t height);

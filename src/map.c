@@ -35,10 +35,13 @@ struct map *parse_map(const char *pathname)
   fgets(s, 10, file);
   size_t height = atoi(s);
 
-
   size_t count_sp = 0;
 
   struct map *map = map_init(width, height);
+
+
+  fgets(s, 10, file);
+  map->nb_enemy = atoi(s);
 
   struct object ***objs = map->objs;
   for (size_t j = 0; j < height; ++j)

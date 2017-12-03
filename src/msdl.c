@@ -182,7 +182,6 @@ int title(void)
     {
       if (e.type == SDL_MOUSEBUTTONDOWN && in_rect(start_rect))
       {
-        printf("START");
         quit = 1;
       }
       if (e.type == SDL_QUIT 

@@ -22,6 +22,7 @@ struct enemy
   struct player *p;
   int speed;
   int cpt;
+  int id;
 };
 
 struct enemy *enemy_create(int x, int y, int life, int speed);

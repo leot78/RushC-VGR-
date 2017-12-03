@@ -3,13 +3,13 @@
 
 enum sprite
 {
-  GROUND,
-  SWALL,
-  PLAYER,
   ACU1,
   ACU2,
   ACU3,
   ACU4,
+  GROUND,
+  SWALL,
+  PLAYER,
   PCLOCK,
   PCULOCK
 };

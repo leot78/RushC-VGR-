@@ -24,6 +24,7 @@ struct enemy *enemy_create(int x, int y, int life, int speed)
   e->last_move = NONE;
   e->speed = speed;
   e->cpt = speed;
+  e->id = rand()%4;
   return e;
 }
 
@@ -167,5 +168,6 @@ void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer)
   }
   else
     e->cpt++;
-  print_sprite(ACU2, e->p->rect, renderer);
+
+  print_sprite(e->id, e->p->rect, renderer);
 }

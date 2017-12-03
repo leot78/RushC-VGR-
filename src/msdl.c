@@ -213,7 +213,7 @@ int play(char *map_p, int menu)
   int nbe = 10;
   struct player *player =  player_create(map->start_x, map->start_y, 3);
   struct enemy **enemies = enemy_create_all(map->spawns, nbe, 2);
-  SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
+  SDL_Rect rect_mdp = init_rect(120, 870, 150, 40);
 
   SDL_Rect int1_rect = init_rect(10, 850, 100, 25);
   SDL_Rect int2_rect = init_rect(10, 870, 100, 25);
@@ -239,7 +239,11 @@ int play(char *map_p, int menu)
     collision(enemies, player, nbe);
     print_sprite(PLAYER, player->rect, renderer);
     if (g_mdp)
+    {
+      SDL_SetRenderDrawColor(renderer, 255,255,255, 0);
+      SDL_RenderFillRect( renderer, &rect_mdp);
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
+    }
 
     interface(player, renderer, int1_rect, int2_rect, int3_rect);
     SDL_RenderPresent(renderer);
@@ -296,6 +300,8 @@ void game(void)
   int menu = 0;
   while (menu != 127)
   {
+
+    SDL_SetRenderDrawColor(get_renderer(), 0,0,0, 0);
     if (menu == 0)
       menu = title();
     else if (menu == 1)

@@ -10,7 +10,7 @@ SDL_Texture *get_ground(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/ground.png");
+    loadedImage = IMG_Load("../imgs/ground.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -24,7 +24,7 @@ SDL_Texture *get_wall(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/wall.png");
+    loadedImage = IMG_Load("../imgs/wall.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -38,7 +38,7 @@ SDL_Texture *get_player(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/player.png");
+    loadedImage = IMG_Load("../imgs/player.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -52,7 +52,7 @@ SDL_Texture *get_acu1(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/acu1.png");
+    loadedImage = IMG_Load("../imgs/acu1.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -66,7 +66,7 @@ SDL_Texture *get_acu2(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/acu2.png");
+    loadedImage = IMG_Load("../imgs/acu2.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -80,7 +80,7 @@ SDL_Texture *get_acu3(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/acu3.png");
+    loadedImage = IMG_Load("../imgs/acu3.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -94,7 +94,7 @@ SDL_Texture *get_acu4(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/acu4.png");
+    loadedImage = IMG_Load("../imgs/acu4.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -108,7 +108,7 @@ SDL_Texture *get_lock(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/desklock.png");
+    loadedImage = IMG_Load("../imgs/desklock.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }
@@ -122,7 +122,7 @@ SDL_Texture *get_pculock(SDL_Renderer *renderer)
   static SDL_Texture *texture = NULL;
   if (!texture)
   {
-    loadedImage = IMG_Load("../../imgs/desk.png");
+    loadedImage = IMG_Load("../imgs/desk.png");
     texture = SDL_CreateTextureFromSurface(renderer, loadedImage);
     SDL_FreeSurface(loadedImage);
   }

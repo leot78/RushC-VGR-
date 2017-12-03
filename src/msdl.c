@@ -47,7 +47,7 @@ void init(void)
     errx(127, "SDl audio could not initialize !");
   Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
   Mix_VolumeMusic(50);
-  Mix_Music *music = Mix_LoadMUS("../../sounds/game.mp3");
+  Mix_Music *music = Mix_LoadMUS("../sounds/game.mp3");
   Mix_PlayMusic(music, 1);
 }
 
@@ -307,13 +307,13 @@ void game(void)
     else if (menu == 1)
       menu = level_choice();
     else if (menu == 2)
-      menu = play("../../maps/LabSR_SM14.map", menu);
+      menu = play("../maps/LabSR_SM14.map", menu);
     else if (menu == 3)
-      menu = play("../../maps/pasteur.map", menu);
+      menu = play("../maps/pasteur.map", menu);
     else if (menu == 4)
-      menu = play("../../maps/VJ.map", menu);
+      menu = play("../maps/VJ.map", menu);
     else if (menu == 5)
-      menu = play("../../maps/midlab.map", menu);
+      menu = play("../maps/midlab.map", menu);
     else if (menu == 6)
       menu = win();
     else 

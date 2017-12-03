@@ -17,6 +17,7 @@ SDL_Texture *msg_texture(char *text, SDL_Color color, SDL_Renderer *renderer)
   TTF_Font *font = get_font();
   SDL_Surface *text_surface = TTF_RenderText_Solid(font, text,color);
   SDL_Texture *message = SDL_CreateTextureFromSurface(renderer, text_surface);
+  SDL_FreeSurface(text_surface);
   return message;
 }
 
@@ -25,4 +26,5 @@ void render_text(char *txt, SDL_Color color, SDL_Renderer *renderer,
 {
   SDL_Texture* texture = msg_texture(txt, color, renderer);
   SDL_RenderCopy(renderer, texture, NULL, &rect);
+  SDL_DestroyTexture(texture);
 }

@@ -1,3 +1,23 @@
+TODO
+
+[X] SDL
+  {X} Menu
+  {X} UI
+  {X} Draw sprites
+
+[X] Maps
+  {X} Map parser
+
+[X] Player
+  {X} Create player
+  {X} Move player
+  {X} Delete player
+
+[X] PC
+  {X} Get input from user
+  {X} Generate random password
+  {X} Check input
+
 [ ] Enemies
-    { }  ACU with ramdom movements
+    {X}  ACU with ramdom movements
     { }  ACU going towards player

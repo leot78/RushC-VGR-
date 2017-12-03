@@ -167,5 +167,5 @@ void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer)
   }
   else
     e->cpt++;
-  print_sprite(ACU, e->p->rect, renderer);
+  print_sprite(ACU2, e->p->rect, renderer);
 }

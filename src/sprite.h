@@ -6,7 +6,10 @@ enum sprite
   GROUND,
   SWALL,
   PLAYER,
-  ACU,
+  ACU1,
+  ACU2,
+  ACU3,
+  ACU4,
   PCLOCK,
   PCULOCK
 };

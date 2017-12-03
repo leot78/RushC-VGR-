@@ -210,7 +210,7 @@ int play(char *map_p, int menu)
 
   SDL_Event e;
   int quit = -1;
-  int nbe = 10;
+  int nbe = map->nb_enemy;
   struct player *player =  player_create(map->start_x, map->start_y, 3);
   struct enemy **enemies = enemy_create_all(map->spawns, nbe, 2);
   SDL_Rect rect_mdp = init_rect(120, 870, 150, 40);

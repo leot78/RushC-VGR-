@@ -31,5 +31,6 @@ void enemy_delete(struct enemy *e);
 void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer);
 void move_all_enemies(struct enemy **enemies, size_t number, struct map *map, 
                       SDL_Renderer *renderer);
+void collision(struct enemy **enemies, struct player *player, size_t len);
 
 #endif /* !ENEMY_H*/

@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include "map.h"
+#include "enemy.h"
 
 struct player
 {
@@ -17,6 +18,5 @@ struct player
 struct player *player_create(int x, int y, int life);
 void player_delete(struct player *p);
 
-void collision(struct **enemies, struct player *player, size_t len);
 struct object *near_lock(struct player *p, struct map *map);
 #endif /* !PLAYER_H */

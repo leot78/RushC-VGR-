@@ -36,8 +36,6 @@ SDL_Renderer *get_renderer(void)
   return renderer;
 }
 
-
-
 void init(void)
 {
   if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -213,6 +211,7 @@ int play(char *map_p)
     }
     render_map(map, renderer);
     move_all_enemies(enemies, nbe, map, renderer);
+    collision(enemies, player, nbe);
     print_sprite(PLAYER, player->rect, renderer);
     if (g_mdp)
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);

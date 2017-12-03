@@ -72,9 +72,45 @@ int try_random_move(struct enemy *e, struct map *map, enum move *last_move,
   return try_move_enemy(*last_move, e, map);
 }
 
-int wall_or_pc(struct object *obj)
+int is_pc(struct object *obj)
 {
-  return obj->type == PC || obj->type == WALL;
+  return obj->type == PC;
+}
+
+int is_wall(struct object *obj)
+{
+  return obj->type == WALL;
+}
+
+int move_wall(struct enemy *e, struct map *map, enum move *last_move)
+{
+  int x = e->p->x;
+  int y = e->p->y;
+  struct object ***obj = map->objs;
+  if (obj[x + 1][y]->type == WALL || obj[x - 1][y]->type == WALL
+      || obj[x][y + 1]->type == WALL || obj[x][y - 1]->type == WALL)
+    return 0;
+
+  if (is_wall(obj[x + 1][y + 1]) && is_wall(obj[x - 1][y + 1])
+      && !is_wall(obj[x + 1][y - 1]) && !is_wall(obj[x - 1][y - 1])
+      && e->last_move != UP)
+          return try_random_move(e, map, last_move, DOWN);
+  
+  if (is_wall(obj[x + 1][y + 1]) && !is_wall(obj[x - 1][y + 1])
+      && is_wall(obj[x + 1][y - 1]) && !is_wall(obj[x - 1][y - 1])
+      && e->last_move != LEFT)
+    return try_random_move(e, map, last_move, RIGHT);
+  
+  if (!is_wall(obj[x + 1][y + 1]) && is_wall(obj[x - 1][y + 1])
+      && !is_wall(obj[x + 1][y - 1]) && is_wall(obj[x - 1][y - 1])
+      && e->last_move != RIGHT)
+    return try_random_move(e, map, last_move, LEFT);
+  
+  if (!is_wall(obj[x + 1][y + 1]) && !is_wall(obj[x - 1][y + 1])
+       && is_wall(obj[x + 1][y - 1]) && is_wall(obj[x - 1][y - 1])
+      && e->last_move != DOWN)
+    return try_random_move(e, map, last_move, UP);
+  return 0;
 }
 
 int move_row(struct enemy *e, struct map *map, enum move *last_move)
@@ -86,23 +122,23 @@ int move_row(struct enemy *e, struct map *map, enum move *last_move)
       || obj[x][y + 1]->type == PC || obj[x][y - 1]->type == PC)
     return 0;
 
-  if (wall_or_pc(obj[x + 1][y + 1]) && wall_or_pc(obj[x - 1][y + 1])
-      //&& !wall_or_pc(obj[x + 1][y - 1]) && !wall_or_pc(obj[x - 1][y - 1])
+  if (is_pc(obj[x + 1][y + 1]) && is_pc(obj[x - 1][y + 1])
+      && !is_pc(obj[x + 1][y - 1]) && !is_pc(obj[x - 1][y - 1])
       && e->last_move != UP)
           return try_random_move(e, map, last_move, DOWN);
   
-  if (wall_or_pc(obj[x + 1][y + 1]) //&& !wall_or_pc(obj[x - 1][y + 1])
-      && wall_or_pc(obj[x + 1][y - 1]) //&& !wall_or_pc(obj[x - 1][y - 1])
+  if (is_pc(obj[x + 1][y + 1]) && !is_pc(obj[x - 1][y + 1])
+      && is_pc(obj[x + 1][y - 1]) && !is_pc(obj[x - 1][y - 1])
       && e->last_move != LEFT)
     return try_random_move(e, map, last_move, RIGHT);
   
-  if (/*!wall_or_pc(obj[x + 1][y + 1]) &&*/ wall_or_pc(obj[x - 1][y + 1])
-      && /*!wall_or_pc(obj[x + 1][y - 1]) &&*/ wall_or_pc(obj[x - 1][y - 1])
+  if (!is_pc(obj[x + 1][y + 1]) && is_pc(obj[x - 1][y + 1])
+      && !is_pc(obj[x + 1][y - 1]) && is_pc(obj[x - 1][y - 1])
       && e->last_move != RIGHT)
     return try_random_move(e, map, last_move, LEFT);
   
-  if (//!wall_or_pc(obj[x + 1][y + 1]) && !wall_or_pc(obj[x - 1][y + 1])
-       wall_or_pc(obj[x + 1][y - 1]) && wall_or_pc(obj[x - 1][y - 1])
+  if (!is_pc(obj[x + 1][y + 1]) && !is_pc(obj[x - 1][y + 1])
+       && is_pc(obj[x + 1][y - 1]) && is_pc(obj[x - 1][y - 1])
       && e->last_move != DOWN)
     return try_random_move(e, map, last_move, UP);
   return 0;
@@ -113,7 +149,7 @@ void move_enemy(struct enemy *e, struct map *map, SDL_Renderer *renderer)
   if (e->cpt == e->speed)
   {
     enum move last_move = NO;
-    int moved = move_row(e, map, &last_move);
+    int moved = move_row(e, map, &last_move) || move_wall(e, map, &last_move);
     if (!moved)
     {
       moved = try_move_enemy(e->last_move, e, map);

@@ -14,5 +14,5 @@ void init_time(void)
 time_t get_time(void)
 {
   time_t cur = time(NULL);
-  return 100 - cur - g_time;
+  return 100 - (cur - g_time);
 }

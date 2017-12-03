@@ -25,7 +25,7 @@ void collision(struct enemy **enemies, struct player *player, size_t len)
   {
     if (enemies[i]->p->x == player->x && enemies[i]->p->y == player->y)
     {
-      player->life -= 1;
+      player->life -= 3;
       return;
     }
   }

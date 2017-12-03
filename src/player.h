@@ -10,7 +10,7 @@ struct player
 {
   size_t x;
   size_t  y;
-  size_t life;
+  int life;
   SDL_Rect rect;
   SDL_Color color;
 };

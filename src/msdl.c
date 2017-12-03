@@ -94,6 +94,17 @@ int in_rect(SDL_Rect rec)
   return x > rx && x < rx + rw && y > ry && y < ry + rh;
 }
 
+void interface(struct player *player, SDL_Renderer *renderer,
+               SDL_Rect r1, SDL_Rect r2)
+{
+  char *score = "Score : 0";
+  char life[8];
+  sprintf(life, "Life: %d",player->life);
+  render_text(score, pick_color(BLACK), renderer, r1);
+  render_text(life, pick_color(BLACK), renderer, 
+      r2);
+}
+
 int win(void)
 {
   SDL_Renderer* renderer = get_renderer();
@@ -108,12 +119,12 @@ int win(void)
     while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_QUIT || (e.key.type == SDL_KEYDOWN 
-          && e.key.keysym.sym == SDLK_RETURN))
+            && e.key.keysym.sym == SDLK_RETURN))
         quit = 127;
     }
     render_text("You won against the ACU's !", pick_color(RED), renderer, txt_rect);
     render_text("Press enter to replay", pick_color(BLACK), renderer, 
-                txt2_rect);
+        txt2_rect);
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
   }
@@ -135,16 +146,16 @@ int die(int menu)
     while (SDL_PollEvent(&e) != 0)
     {
       if (e.type == SDL_QUIT || (e.key.type == SDL_KEYDOWN 
-          && e.key.keysym.sym == SDLK_ESCAPE))
+            && e.key.keysym.sym == SDLK_ESCAPE))
         quit = 0;
       if (e.key.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN)
         quit = menu - 10;
     }
     render_text("You've been confloosed", pick_color(RED), renderer, txt_rect);
     render_text("Press enter to replay", pick_color(BLACK), renderer, 
-                txt2_rect);
+        txt2_rect);
     render_text("Press escape for menu", pick_color(BLACK), renderer, 
-                txt3_rect);
+        txt3_rect);
     SDL_RenderPresent(renderer);
     SDL_Delay(10);
   }
@@ -200,6 +211,9 @@ int play(char *map_p, int menu)
   struct player *player =  player_create(map->start_x, map->start_y, 3);
   struct enemy **enemies = enemy_create_all(map->spawns, nbe, 2);
   SDL_Rect rect_mdp = init_rect(800, 100, 200, 50);
+
+  SDL_Rect int1_rect = init_rect(10, 850, 100, 25);
+  SDL_Rect int2_rect = init_rect(10, 900, 100, 25);
   g_mdp = NULL;
 
   while (quit == -1)
@@ -222,6 +236,8 @@ int play(char *map_p, int menu)
     print_sprite(PLAYER, player->rect, renderer);
     if (g_mdp)
       render_text(g_mdp->mdp, pick_color(WHITE), renderer, rect_mdp);
+
+    interface(player, renderer, int1_rect, int2_rect);
     SDL_RenderPresent(renderer);
     if (player->life <= 0)
       quit = menu + 10;

@@ -16,6 +16,7 @@
 #include "color.h"
 #include "enemy.h"
 #include "sprite.h"
+#include "timer.h"
 
 SDL_Window* get_screen(void)
 {
@@ -188,7 +189,7 @@ int title(void)
 
 int play(char *map_p, int menu)
 {
-
+  init_time();
   struct map *map = parse_map(map_p);
   SDL_Renderer* renderer = get_renderer();
   SDL_RenderClear(renderer);
@@ -228,6 +229,7 @@ int play(char *map_p, int menu)
     if (check_unlock(map))
       quit = 6;
     SDL_Delay(40);
+    printf("%s\n", get_time());
   }
   free(player);
   return quit;

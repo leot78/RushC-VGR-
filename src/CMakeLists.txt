@@ -14,6 +14,7 @@ set (SRC
   random_string_gen.c
   text.c
   sprite.c
+  timer.c
   )
 
 add_library(game SHARED ${SRC})

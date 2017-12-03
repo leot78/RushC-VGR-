@@ -11,7 +11,7 @@ enum sprite
   PCULOCK
 };
 
-
+void free_sprites(SDL_Renderer *renderer);
 void print_sprite(enum sprite sprite, SDL_Rect rect, SDL_Renderer *renderer);
 
 #endif /* !SPRITE_H */

@@ -219,6 +219,9 @@ int play(char *map_p)
     SDL_RenderPresent(renderer);
     if (player->life <= 0)
       quit = 6;
+
+    if (check_unlock(map))
+      quit = 7;
     SDL_Delay(40);
   }
   free(player);
@@ -281,7 +284,7 @@ void game(void)
     else if (menu == 6)
       menu = die();
     else if (menu == 7)
-      menu = die();
+      menu = win();
   }
 }
 
@@ -291,7 +294,9 @@ int main(void)
   init();
   SDL_Window *screen = get_screen();
   game();
-  SDL_DestroyWindow(screen);
 
+  free_sprites(get_renderer());
+  SDL_DestroyRenderer(get_renderer());
+  SDL_DestroyWindow(screen);
   SDL_Quit();
 }

@@ -87,6 +87,16 @@ SDL_Texture *get_pculock(SDL_Renderer *renderer)
   return texture;
 }
 
+void free_sprites(SDL_Renderer *renderer)
+{
+  SDL_DestroyTexture(get_ground(renderer));
+  SDL_DestroyTexture(get_wall(renderer));
+  SDL_DestroyTexture(get_player(renderer));
+  SDL_DestroyTexture(get_acu(renderer));
+  SDL_DestroyTexture(get_lock(renderer));
+  SDL_DestroyTexture(get_pculock(renderer));
+}
+
 void print_sprite(enum sprite sprite, SDL_Rect rect, SDL_Renderer *renderer)
 {
   SDL_Texture *texture = NULL;
@@ -107,7 +117,6 @@ void print_sprite(enum sprite sprite, SDL_Rect rect, SDL_Renderer *renderer)
 
   if (sprite == PCULOCK)
     texture = get_pculock(renderer);
-
 
   SDL_RenderCopy(renderer, texture, NULL, &rect);
 }
